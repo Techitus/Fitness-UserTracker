@@ -6,7 +6,9 @@
     "dev": "next dev --turbopack",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "next lint",
+    "db:migration": "drizzle-kit generate --config=drizzle.config.ts",
+    "db:migrate": "node -r esbuild-register ./migrate.js "
   },
   "dependencies": {
     "dotenv": "^16.4.7",
@@ -19,7 +21,7 @@
   },
   "devDependencies": {
     "@eslint/eslintrc": "^3",
-    "@types/node": "^20",
+    "@types/node": "^20.17.14",
     "@types/react": "^19",
     "@types/react-dom": "^19",
     "eslint": "^9",

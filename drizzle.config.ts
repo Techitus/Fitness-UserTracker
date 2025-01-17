@@ -10,3 +10,8 @@ export default defineConfig({
         url : process.env.DB_STRING as string
     }
 })
+
+
+//"db:migration" : "drizzle-kit generate --config=drizzle.config.ts" mannual migration command created in package.json
+
+//  "db:migrate": "node -r esbuild-register ./migrate.js " this also mannually created
