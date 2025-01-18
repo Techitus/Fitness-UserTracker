@@ -1,5 +1,6 @@
 # See https://help.github.com/articles/ignoring-files/ for more about ignoring files.
 .env
+./adminseeder.ts
 # dependencies
 /node_modules
 /.pnp

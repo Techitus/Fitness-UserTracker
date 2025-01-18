@@ -1,6 +1,12 @@
 import { sql } from "drizzle-orm";
 import { integer, pgTable,serial, text,boolean, timestamp, varchar } from "drizzle-orm/pg-core";
-
+export const auth = pgTable('auth',{
+    id : serial("id").primaryKey(),
+    email : text("email").unique().notNull(),
+    password : text("password").notNull(),
+    createdAt : timestamp("createdAt").default(sql `CURRENT_TIMESTAMP`),
+    updatedAt : timestamp("updatedAt").default(sql `CURRENT_TIMESTAMP`)
+})
 export const userDatas = pgTable('userdatas',{
     id : serial("id").primaryKey(),
     userName : varchar("userName",{length : 20}).notNull(),
