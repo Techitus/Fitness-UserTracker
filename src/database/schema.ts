@@ -1,5 +1,5 @@
 import { sql } from "drizzle-orm";
-import {  pgTable,serial, text, timestamp, varchar } from "drizzle-orm/pg-core";
+import { integer, pgTable,serial, text,boolean, timestamp, varchar } from "drizzle-orm/pg-core";
 
 export const userDatas = pgTable('userdatas',{
     id : serial("id").primaryKey(),
@@ -9,8 +9,15 @@ export const userDatas = pgTable('userdatas',{
     profile : varchar("profile"),
     joinedDate : timestamp('joinedDate').notNull(),
     paymentDate : timestamp('paymentDate').notNull(),
-    attendace : text('attendance').notNull(),
     createdAt : timestamp("createdAt").default(sql `CURRENT_TIMESTAMP`),
     updatedAt : timestamp("updatedAt").default(sql `CURRENT_TIMESTAMP`)
 
+})
+export const attendance = pgTable('attendance',{
+    id : serial("id").primaryKey(),
+    userId : serial("userId").references(() => userDatas.id),
+    isPresent : boolean('isPresent').default(false),
+    day : integer('day').notNull(),
+    createdAt : timestamp("createdAt").default(sql `CURRENT_TIMESTAMP`),
+    updatedAt : timestamp("updatedAt").default(sql `CURRENT_TIMESTAMP`)
 })
