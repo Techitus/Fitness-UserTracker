@@ -5,7 +5,7 @@ import { cn } from '@/lib/utils'
 
 export interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
   variant?: 'default' | 'outline' | 'ghost'
-  size?: 'default' | 'sm' | 'lg'
+  size?: 'default' | 'sm' | 'lg' | 'login'
 }
 
 const Button = forwardRef<HTMLButtonElement, ButtonProps>(
@@ -21,6 +21,7 @@ const Button = forwardRef<HTMLButtonElement, ButtonProps>(
             'h-10 py-2 px-4': size === 'default',
             'h-9 px-3': size === 'sm',
             'h-11 px-8': size === 'lg',
+            'h-9 px-8': size === 'login',
           },
           className
         )}

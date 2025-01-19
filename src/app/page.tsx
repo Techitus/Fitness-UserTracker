@@ -1,8 +1,11 @@
+import Navbar from "@/components/navbar/Navbar";
 
 export default function Home() {
   return (
     <div>
-      <h1>HEllo </h1>
+    <div className="min-h-screen bg-background text-foreground">
+<Navbar/>
+    </div>
     </div>
   );
 }
