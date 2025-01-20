@@ -2,14 +2,14 @@
 
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
-import { Home, Users, Calendar, Phone, User } from 'lucide-react'
+import { Home, Users, Calendar, Settings, User } from 'lucide-react'
 import { cn } from "@/lib/utils"
 
 const menuItems = [
   { icon: Home, name: 'Home', path: '/' },
   { icon: Users, name: 'Users', path: '/users' },
   { icon: Calendar, name: 'Attendance', path: '/attendance' },
-  { icon: Phone, name: 'Contact', path: '/contact' },
+  { icon: Settings, name: 'Setting', path: '/setting' },
 ]
 
 export default function Sidebar() {
