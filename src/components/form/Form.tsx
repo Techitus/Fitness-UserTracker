@@ -6,8 +6,8 @@ import logo from '@/app/images/logo-gym.png';
 
 export default function LoginForm() {
   return (
-    <div className="flex items-center justify-center w-full h-full bg-transparent">
-      <Card className="w-full max-w-md bg-black">
+    <div className="flex items-center justify-center w-3/4 md:w-full h-full bg-transparent ">
+      <Card className="w-full max-w-md ">
         <CardHeader className="flex justify-center items-center">
           <div className="w-28 h-28 bg-gray-200 rounded-full flex items-center justify-center overflow-hidden">
             <Image

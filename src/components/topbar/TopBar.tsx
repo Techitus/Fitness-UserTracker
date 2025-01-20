@@ -4,6 +4,7 @@ import { useState, useEffect } from 'react'
 import { Input } from "@/components/ui/input"
 import { Button } from "@/components/ui/button"
 import { Moon, Sun, Search, Menu } from 'lucide-react'
+import Link from 'next/link'
 
 interface TopBarProps {
   onMenuClick: () => void;
@@ -47,7 +48,10 @@ export default function TopBar({ onMenuClick }: TopBarProps) {
         <Button variant="ghost" size="sm" onClick={toggleDarkMode}>
           {isDarkMode ? <Sun className="h-5 w-5" /> : <Moon className="h-5 w-5" />}
         </Button>
-        <Button size='login'>Login</Button>
+       
+       <Link href="/auth/login">
+       <Button size='login'>Login</Button>
+       </Link>
       </div>
     </div>
   )

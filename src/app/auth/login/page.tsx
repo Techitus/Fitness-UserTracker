@@ -9,7 +9,7 @@ const Page = () => {
      
       <Background />
 
-      <div className="absolute inset-0 flex items-center justify-center">
+      <div className="absolute inset-0 flex items-center justify-center -mt-40">
         <LoginForm />
       </div>
     </div>

@@ -15,7 +15,7 @@ const StyledWrapper = styled.div`
     width: 100vw;
     height: 100vh;
 
-    background: #000000;
+    
     --gap: 5em;
     --line: 1px;
     --color: rgba(255, 255, 255, 0.2);
