@@ -1,34 +1,45 @@
-'use client'
+"use client"
 
-import { useState, useEffect } from 'react'
+import { useState, useEffect } from "react"
 import { Input } from "@/components/ui/input"
 import { Button } from "@/components/ui/button"
-import { Moon, Sun, Search, Menu } from 'lucide-react'
-import Link from 'next/link'
+import { Moon, Sun, Search, Menu, X } from "lucide-react"
+import Link from "next/link"
 
 interface TopBarProps {
-  onMenuClick: () => void;
+  onMenuClick: () => void
+  isSidebarOpen: boolean
 }
 
-export default function TopBar({ onMenuClick }: TopBarProps) {
+export default function TopBar({ onMenuClick, isSidebarOpen }: TopBarProps) {
   const [isDarkMode, setIsDarkMode] = useState(false)
+  const [isMobile, setIsMobile] = useState(false)
 
   useEffect(() => {
-    const isDark = document.documentElement.classList.contains('dark')
+    const isDark = document.documentElement.classList.contains("dark")
     setIsDarkMode(isDark)
+
+    const checkMobile = () => {
+      setIsMobile(window.innerWidth < 768)
+    }
+    checkMobile()
+    window.addEventListener("resize", checkMobile)
+    return () => window.removeEventListener("resize", checkMobile)
   }, [])
 
   const toggleDarkMode = () => {
     setIsDarkMode(!isDarkMode)
-    document.documentElement.classList.toggle('dark')
+    document.documentElement.classList.toggle("dark")
   }
 
   return (
-    <div className="w-full px-4 py-3 flex flex-wrap items-center justify-between gap-4 bg-background border-b ">
+    <div className="w-full px-4 py-3 flex flex-wrap items-center justify-between gap-4 bg-background border-b">
       <div className="flex items-center">
-        <Button variant="ghost" size="sm" className="md:hidden mr-2 hidden" onClick={onMenuClick}>
-          <Menu className="h-5 w-5" />
-        </Button>
+        {isMobile && (
+          <Button variant="ghost" size="sm" className="mr-2 z-50" onClick={onMenuClick}>
+            {isSidebarOpen ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
+          </Button>
+        )}
         <div className="flex items-center">
           <svg className="h-8 w-8 text-primary" fill="none" viewBox="0 0 24 24" stroke="currentColor">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 10V3L4 14h7v7l9-11h-7z" />
@@ -48,10 +59,10 @@ export default function TopBar({ onMenuClick }: TopBarProps) {
         <Button variant="ghost" size="sm" onClick={toggleDarkMode}>
           {isDarkMode ? <Sun className="h-5 w-5" /> : <Moon className="h-5 w-5" />}
         </Button>
-       
-       <Link href="/auth/login">
-       <Button size='login'>Login</Button>
-       </Link>
+
+        <Link href="/auth/login">
+          <Button size="login">Login</Button>
+        </Link>
       </div>
     </div>
   )
