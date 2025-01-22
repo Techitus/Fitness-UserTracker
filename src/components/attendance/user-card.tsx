@@ -34,7 +34,7 @@ export function UserCard({ user, onAttend }: UserCardProps) {
           Attend User
         </Button>
         <Button variant="outline" className="w-full flex" >
-          <Link className="flex" href={`/user/${user.id}`}>
+          <Link className="flex" href={`/users/${user.id}`}>
             <ArrowRight className="mr-2 h-4 w-4 mt-1" />
             View More
           </Link>
