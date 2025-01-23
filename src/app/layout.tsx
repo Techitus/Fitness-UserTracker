@@ -48,7 +48,7 @@ export default function RootLayout({
             <TopBar onMenuClick={toggleSidebar} isSidebarOpen={isSidebarOpen} />
             <main
               className={cn(
-                "flex-1 overflow-x-hidden overflow-y-visible 2xl:overflow-y-hidden p-4",
+                "flex-1 overflow-x-hidden overflow-y-visible xl:overflow-y-hidden p-4",
                 isMobile ? (isSidebarOpen ? "ml-64" : "ml-0") : "md:ml-16",
               )}
             >

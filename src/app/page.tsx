@@ -1,10 +1,12 @@
 "use client"
+
+import GymHomepage from "@/components/home/Home";
+
+
 export default function Home() {
   return (
     <div>
-    <div className="min-h-screen bg-background text-foreground">
-
-    </div>
+    <GymHomepage/>
     </div>
   );
 }
