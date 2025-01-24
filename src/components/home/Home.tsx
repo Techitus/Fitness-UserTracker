@@ -27,7 +27,7 @@ export default function Dashboard() {
                 <DollarSign className="h-4 w-4 text-muted-foreground" />
               </div>
               <div className="mt-4">
-                <p className="text-2xl font-bold">$45,231.89</p>
+                <p className="text-2xl font-bold ">$45,231.89</p>
                 <p className="text-sm text-green-500 mt-1">+20.1% from last month</p>
               </div>
             </CardContent>
