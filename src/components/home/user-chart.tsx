@@ -37,10 +37,10 @@ export function UserChart() {
             accessibilityLayer
             data={chartData}
             margin={{
-              left: 12,
-              right: 12,
-              top: 12,
-              bottom: 12,
+              left: 0,
+              right: 0,
+              top:0,
+              bottom: 28,
             }}
           >
             <CartesianGrid vertical={false} />
@@ -55,17 +55,17 @@ export function UserChart() {
             <Area
               dataKey="mobile"
               type="natural"
-              fill="hsl(var(--chart-2))"
+              fill="gray"
               fillOpacity={0.4}
-              stroke="hsl(var(--chart-2))"
+              stroke="gray"
               stackId="a"
             />
             <Area
               dataKey="desktop"
               type="natural"
-              fill="hsl(var(--chart-1))"
+              fill="#334155"
               fillOpacity={0.4}
-              stroke="hsl(var(--chart-1))"
+              stroke="#334155"
               stackId="a"
             />
           </AreaChart>

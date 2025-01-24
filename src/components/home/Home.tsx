@@ -2,7 +2,7 @@
 
 import { QRCodeSVG } from "qrcode.react"
 import { DollarSign, Users, CreditCard, Activity } from "lucide-react"
-import { Card, CardContent } from "@/components/ui/card"
+import { Card, CardContent, CardHeader } from "@/components/ui/card"
 import { UserChart } from "./user-chart"
 
 export default function Dashboard() {
@@ -12,8 +12,9 @@ export default function Dashboard() {
   return (
     <div className={`min-h-screen p-8 bg-background`}>
       <div className="container mx-auto">
+      <h1 className="text-2xl xl:text-4xl mb-4 -mt-4">Welcome to XYZ Gym Centre</h1>
+
         <div className="flex justify-end mb-4">
-         
         </div>
 
         {/* Top Cards */}
@@ -84,8 +85,9 @@ export default function Dashboard() {
 
           {/* QR Code */}
           <Card className="col-span-1 md:col-span-2 bg-card">
-            <CardContent className="h-[500px] flex items-center justify-center p-8">
-              <QRCodeSVG value="https://example.com" size={400} className="w-full h-full max-w-[400px]" level="H" />
+          <CardHeader className="text-center text-2xl">Make a Secure Payment</CardHeader>
+            <CardContent className="h-[400px] flex items-center justify-center p-8">
+              <QRCodeSVG value="https://example.com" size={300} className="w-full h-full max-w-[400px]" level="H" />
             </CardContent>
           </Card>
         </div>
