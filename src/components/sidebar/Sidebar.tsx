@@ -16,7 +16,7 @@ export default function Sidebar() {
   const pathname = usePathname()
 
   return (
-    <aside className="mt-0 h-screen bg-trasnparent text-foreground flex flex-col w-full transition-all duration-300 overflow-hidden group">
+    <aside className="mt-0 h-screen bg-trasnparent text-foreground flex flex-col w-3/4 transition-all duration-300 overflow-hidden group">
       <nav className="flex-1 pt-0">
         <ul className="space-y-2 py-4">
           {menuItems.map((item) => (
