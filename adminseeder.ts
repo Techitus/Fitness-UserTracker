@@ -1,7 +1,7 @@
 import bcrypt from "bcrypt"
 import { eq } from "drizzle-orm";
 import { database } from "@/database/database";
-import { auth } from "@/database/schema";
+import { auth } from "@/database/schemas/user.schema";
 
 export async function seedAdmin() {
   const adminEmail = "admin@example.com";
