@@ -36,7 +36,7 @@ export async function POST(request: NextRequest) {
     // Hash the password
     const salt = await bcrypt.genSalt(10);
     const hashedPassword = await bcrypt.hash(password, salt);
-
+    const hashedConfirmPassword = await bcrypt.hash(confirmPassword,salt)
     // Insert the new user and return the id
     const [insertedUser] = await database
       .insert(auth)
@@ -44,7 +44,7 @@ export async function POST(request: NextRequest) {
         username,
         email,
         password: hashedPassword, 
-        confirmPassword,
+        confirmPassword : hashedConfirmPassword
       })
       .returning({ id: auth.id }); 
 

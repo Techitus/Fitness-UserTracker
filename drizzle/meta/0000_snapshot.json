@@ -1,5 +1,5 @@
 {
-  "id": "11649139-4bbb-48d4-95f5-bc9f90d7780b",
+  "id": "5a930cff-3673-433c-8e07-6d99b29d25ed",
   "prevId": "00000000-0000-0000-0000-000000000000",
   "version": "7",
   "dialect": "postgresql",
@@ -35,6 +35,12 @@
         "phoneNumber": {
           "name": "phoneNumber",
           "type": "varchar(10)",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "admissionFee": {
+          "name": "admissionFee",
+          "type": "varchar",
           "primaryKey": false,
           "notNull": true
         },
@@ -159,9 +165,10 @@
       "columns": {
         "id": {
           "name": "id",
-          "type": "serial",
+          "type": "uuid",
           "primaryKey": true,
-          "notNull": true
+          "notNull": true,
+          "default": "'fa9b0b4c-f14d-4ffc-a101-95ecf6aed13e'"
         },
         "username": {
           "name": "username",

@@ -4,6 +4,7 @@ CREATE TABLE "userdatas" (
 	"email" text,
 	"address" text NOT NULL,
 	"phoneNumber" varchar(10) NOT NULL,
+	"admissionFee" varchar NOT NULL,
 	"profile" varchar,
 	"joinedDate" timestamp NOT NULL,
 	"paymentDate" timestamp NOT NULL,
@@ -22,7 +23,7 @@ CREATE TABLE "attendance" (
 );
 --> statement-breakpoint
 CREATE TABLE "auth" (
-	"id" serial PRIMARY KEY NOT NULL,
+	"id" uuid PRIMARY KEY DEFAULT 'fa9b0b4c-f14d-4ffc-a101-95ecf6aed13e' NOT NULL,
 	"username" text NOT NULL,
 	"email" text NOT NULL,
 	"password" text NOT NULL,

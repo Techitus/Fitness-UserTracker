@@ -7,6 +7,7 @@ export const userDatas = pgTable('userdatas',{
     email : text("email").unique(),
     address : text("address").notNull(),
     phoneNumber : varchar("phoneNumber",{length : 10}).notNull(),
+    admissionFee : varchar('admissionFee').notNull(),
     profile : varchar("profile"),
     joinedDate : timestamp('joinedDate').notNull(),
     paymentDate : timestamp('paymentDate').notNull(),
