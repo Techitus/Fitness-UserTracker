@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { database } from '@/database/database';
 import { auth } from '@/database/schemas/auth.schema';
@@ -21,16 +20,20 @@ export const sendEmail = async ({ email, emailType, userId }: Type) => {
     try {
         const hashedToken = await bcrypt.hash(userId.toString(), 10);
         
+        const userIdAsNumber = typeof userId === 'string' 
+            ? parseInt(userId, 10) 
+            : userId;
+
         if (emailType === mailerType.VERIFY) {
             await database.update(auth).set({
                 verifyToken: hashedToken,
-                verifyTokenExpiry: new Date(Date.now() + 3600000), // 1 hour
-            }).where(eq(auth.id, userId));
+                verifyTokenExpiry: new Date(Date.now() + 3600000),
+            }).where(eq(auth.id, userIdAsNumber));
         } else if (emailType === mailerType.RESET) {
             await database.update(auth).set({
-                forgetPasswordToken: hashedToken,
-                forgotPasswordTokenExpiry: new Date(Date.now() + 3600000), // 1 hour
-            }).where(eq(auth.id, userId));
+                forgotPasswordToken: hashedToken,
+                forgotPasswordTokenExpiry: new Date(Date.now() + 3600000),
+            }).where(eq(auth.id, userIdAsNumber));
         }
 
         try {

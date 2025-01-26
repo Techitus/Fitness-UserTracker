@@ -10,7 +10,7 @@ export const auth = pgTable('auth',{
     isAdmin : boolean('isAdmin').default(false),
     verifyToken : text('verifyToken'),
     verifyTokenExpiry: timestamp('verifyTokenExpiry'),
-    forgotPasswordToken : text('forgotPasswordToken'),
+    forgotPasswordToken : text('forgotPasswordToken'), 
     forgotPasswordTokenExpiry: timestamp('forgotPasswordTokenExpiry'),
     createdAt : timestamp("createdAt").default(sql `CURRENT_TIMESTAMP`),
     updatedAt : timestamp("updatedAt").default(sql `CURRENT_TIMESTAMP`)
