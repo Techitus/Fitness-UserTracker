@@ -1,9 +1,10 @@
 
 import {defineConfig} from "drizzle-kit"
-import dotenv from 'dotenv';
-dotenv.config();
+import dotenv from 'dotenv'
+
+dotenv.config({ path: '.env.local' });
 export default defineConfig({
-    schema : "./src/database/schema.ts",
+    schema: "./src/database/schemas/index.ts",
     out : "./drizzle" ,//migration file ko structure
     dialect :"postgresql",
     dbCredentials : {
