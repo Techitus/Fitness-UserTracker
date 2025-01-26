@@ -16,3 +16,4 @@ export const auth = pgTable('auth',{
     createdAt : timestamp("createdAt").default(sql `CURRENT_TIMESTAMP`),
     updatedAt : timestamp("updatedAt").default(sql `CURRENT_TIMESTAMP`)
 })
+export type AuthUser = typeof auth.$inferSelect;
