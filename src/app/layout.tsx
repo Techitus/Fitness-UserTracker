@@ -5,6 +5,7 @@ import { cn } from "@/lib/utils"
 import "./globals.css"
 import Sidebar from "@/components/sidebar/Sidebar"
 import TopBar from "@/components/topbar/TopBar"
+import StoreProvider from "@/store/StoreProvider"
 
 export default function RootLayout({
   children,
@@ -32,6 +33,7 @@ export default function RootLayout({
   }
 
   return (
+    <StoreProvider>
     <html lang="en" className="dark" suppressHydrationWarning>
       <body className="bg-background text-foreground">
         <div className="flex h-screen overflow-hidden">
@@ -58,6 +60,7 @@ export default function RootLayout({
         </div>
       </body>
     </html>
+    </StoreProvider>
   )
 }
 
