@@ -1,5 +1,5 @@
 {
-  "id": "5a930cff-3673-433c-8e07-6d99b29d25ed",
+  "id": "99663079-3c13-4642-9ce6-2aa7373a8985",
   "prevId": "00000000-0000-0000-0000-000000000000",
   "version": "7",
   "dialect": "postgresql",
@@ -168,7 +168,7 @@
           "type": "uuid",
           "primaryKey": true,
           "notNull": true,
-          "default": "'fa9b0b4c-f14d-4ffc-a101-95ecf6aed13e'"
+          "default": "'100ba883-9062-4072-8ca1-f11eebb8a906'"
         },
         "username": {
           "name": "username",
@@ -184,12 +184,6 @@
         },
         "password": {
           "name": "password",
-          "type": "text",
-          "primaryKey": false,
-          "notNull": true
-        },
-        "confirmPassword": {
-          "name": "confirmPassword",
           "type": "text",
           "primaryKey": false,
           "notNull": true

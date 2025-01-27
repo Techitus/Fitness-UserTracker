@@ -6,7 +6,6 @@ export const auth = pgTable('auth',{
         username : text('username').notNull(),
     email : text("email").unique().notNull(),
     password : text("password").notNull(),
-    confirmPassword : text("confirmPassword").notNull(),
     isVerified : boolean('isVerified').default(false),
     isAdmin : boolean('isAdmin').default(false),
     verifyToken : text('verifyToken'),

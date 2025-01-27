@@ -9,7 +9,7 @@ dotenv.config({ path: '.env.local' });
 export async function POST(req:NextRequest){
     try{
         const reqBody = await req.json()
-        const {email,password,confirmPassword} = reqBody
+        const {email,password} = reqBody
 
         const [user]= await database.select().from(auth).where(eq(auth.email, email)).limit(1)
 
@@ -18,9 +18,9 @@ export async function POST(req:NextRequest){
         }
    const validPassword =  await bcrypt.compare(password, user.password)
 
-   const validConfirmPassword = await bcrypt.compare(confirmPassword, user.confirmPassword)
+   
      
-   if(!validPassword && !validConfirmPassword){
+   if(!validPassword ){
     return NextResponse.json({error: "Please check your credentials..."}, {status: 404})
    }
      const tokenPayload = {
@@ -30,7 +30,7 @@ export async function POST(req:NextRequest){
      }
   const token =  jwt.sign(tokenPayload, process.env.TOKEN_SECRET!, { expiresIn: '1h' })
 
- const response =   NextResponse.json({message : "User logged in successfully",sucess : true}, {status: 200})
+ const response =   NextResponse.json({message : "User logged in successfully",sucess : true}, {status: 200},)
     response.cookies.set("token",token,{
         httpOnly : true
     })

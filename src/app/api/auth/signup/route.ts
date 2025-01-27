@@ -9,7 +9,15 @@ import { mailerType, sendEmail } from "@/utils/mailer";
 export async function POST(request: NextRequest) {
   try {
     const reqBody = await request.json();
-    const { username, email, password, confirmPassword } = reqBody;
+    const { username, email, password } = reqBody;
+
+    // Input validation
+    if (!username || !email || !password) {
+      return NextResponse.json(
+        { error: "All fields are required" },
+        { status: 400 }
+      );
+    }
 
     // Check if the user already exists
     const existingUser = await database
@@ -25,42 +33,53 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    // Check if passwords match
-    if (password !== confirmPassword) {
-      return NextResponse.json(
-        { error: "Passwords do not match" },
-        { status: 400 }
-      );
-    }
+   
 
-    // Hash the password
-    const salt = await bcrypt.genSalt(10);
-    const hashedPassword = await bcrypt.hash(password, salt);
-    const hashedConfirmPassword = await bcrypt.hash(confirmPassword,salt)
-    // Insert the new user and return the id
-    const [insertedUser] = await database
+    // Hash the password (only need to hash the main password)
+    const hashedPassword = await bcrypt.hash(password, 10);
+
+    // Insert the new user
+    const [newUser] = await database
       .insert(auth)
       .values({
         username,
         email,
-        password: hashedPassword, 
-        confirmPassword : hashedConfirmPassword
+        password: hashedPassword,
+        isVerified: false,
+        forgotPasswordToken: null,
+        forgotPasswordTokenExpiry: null,
+        verifyToken: null,
+        verifyTokenExpiry: null
       })
-      .returning({ id: auth.id }); 
+      .returning();
 
-    if (!insertedUser) {
-      throw new Error("Failed to insert user into the database");
+    if (!newUser || !newUser.id) {
+      throw new Error("Failed to create user");
     }
 
     // Send verification email
     await sendEmail({
       email,
       emailType: mailerType.VERIFY,
-      userId: insertedUser.id,
+      userId: newUser.id
     });
 
-    return NextResponse.json({ message: "User registered successfully",success : true, insertedUser });
+    // Return success without exposing sensitive data
+    return NextResponse.json({
+      message: "User registered successfully",
+      success: true,
+      user: {
+        id: newUser.id,
+        username: newUser.username,
+        email: newUser.email,
+        isVerified: newUser.isVerified
+      }
+    });
+
   } catch (err: any) {
-    return NextResponse.json({ error: err.message }, { status: 500 });
+    console.error("Signup Error:", err);
+    return NextResponse.json({ 
+      error: err.message || "Failed to create user"
+    }, { status: 500 });
   }
 }
