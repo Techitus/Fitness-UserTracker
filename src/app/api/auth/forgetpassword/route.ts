@@ -1,7 +1,9 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { database } from "@/database/database";
 import { auth } from "@/database/schemas";
 import generateOtp from "@/utils/generateOtp";
 import sendEmail from "@/utils/mailer";
+import createResponse from "@/utils/nextResponse";
 import { eq } from "drizzle-orm";
 import { NextRequest, NextResponse } from "next/server";
 
@@ -60,11 +62,9 @@ await database
                 { status: 500 }
             );
         }
-    } catch (err) {
+    } catch (err:any) {
         console.error("Request Error:", err);
-        return NextResponse.json(
-            { error: "Something went wrong. Please try again." },
-            { status: 500 }
-        );
+        return createResponse(500,err,"Something went wrong")
     }
+    
 }
