@@ -1,9 +1,8 @@
 import { sql } from "drizzle-orm";
 import {  boolean, pgTable, text, timestamp, uuid } from "drizzle-orm/pg-core";
-import { v4 as uuidv4 } from 'uuid';
 export const auth = pgTable('auth',{
-    id: uuid('id').primaryKey().default(uuidv4()),
-        username : text('username').notNull(),
+    id: uuid('id').primaryKey().default(sql`gen_random_uuid()`),
+    username : text('username').notNull(),
     email : text("email").unique().notNull(),
     password : text("password").notNull(),
     isVerified : boolean('isVerified').default(false),

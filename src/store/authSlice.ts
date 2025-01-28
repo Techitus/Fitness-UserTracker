@@ -1,14 +1,16 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
-/* eslint-disable @typescript-eslint/no-explicit-any */
-import { authAPI } from "@/http";
 import { STATUS } from "@/types/status";
 import { authUserType } from "@/types/user.auth";
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
+import { AppDispatch } from "./store";
+import axios from "axios";
+axios.defaults.headers.post["Content-Type"] = "application/json";
+
 interface AuthState {
     user : authUserType,
     status : STATUS
 }
-interface RegisterData {
+export interface RegisterData {
     username: string;
     email: string;
     password: string;
@@ -35,20 +37,23 @@ export const {setUser, setStatus} = authSlice.actions
 export default authSlice.reducer;
 
 
-export function register(data :RegisterData ){
-    return async function registerThunk(dispatch : any){
+export function register(user :RegisterData ){
+    return async function registerThunk(dispatch : AppDispatch){
         dispatch(setStatus(STATUS.LOADING))
         try{
-            const response = await authAPI.post('register',data)
+            const response = await axios.post('/api/auth/signup',user)
             if(response.status === 200){
-                dispatch(setUser(response.data.user))
                 dispatch(setStatus(STATUS.SUCCESS))
+                dispatch(setUser(response.data));
             }else{
+                alert("Unexpected response");
                 dispatch(setStatus(STATUS.ERROR))
+                
             }
 
         }catch(error){
             dispatch(setStatus(STATUS.ERROR))
+
         }
     }
 }

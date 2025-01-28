@@ -5,7 +5,7 @@ import { eq } from "drizzle-orm";
 import { NextRequest, NextResponse } from "next/server";
 import bcrypt from "bcryptjs";
 import { mailerType, sendEmail } from "@/utils/mailer";
-
+import { v4 as uuidv4 } from 'uuid';
 export async function POST(request: NextRequest) {
   try {
     const reqBody = await request.json();
@@ -42,6 +42,7 @@ export async function POST(request: NextRequest) {
     const [newUser] = await database
       .insert(auth)
       .values({
+        id: uuidv4(),
         username,
         email,
         password: hashedPassword,

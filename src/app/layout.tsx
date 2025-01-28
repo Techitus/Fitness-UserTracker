@@ -6,6 +6,7 @@ import "./globals.css"
 import Sidebar from "@/components/sidebar/Sidebar"
 import TopBar from "@/components/topbar/TopBar"
 import StoreProvider from "@/store/StoreProvider"
+import { Toaster } from "@/components/ui/toaster"
 
 export default function RootLayout({
   children,
@@ -58,6 +59,8 @@ export default function RootLayout({
             </main>
           </div>
         </div>
+        <Toaster />
+
       </body>
     </html>
     </StoreProvider>

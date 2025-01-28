@@ -1,6 +1,6 @@
 "use client";
 
-import LoginForm from "@/components/form/Form";
+import AuthForm from "@/components/form/Form";
 import Background from "@/components/ui/background";
 
 const Page = () => {
@@ -10,7 +10,7 @@ const Page = () => {
       <Background />
 
       <div className="absolute inset-0 flex items-center justify-center -mt-40">
-        <LoginForm />
+        < AuthForm mode= "signin"/>
       </div>
     </div>
   );
