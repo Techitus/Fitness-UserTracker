@@ -60,7 +60,7 @@ export default function TopBar({ onMenuClick, isSidebarOpen }: TopBarProps) {
           {isDarkMode ? <Sun className="h-5 w-5" /> : <Moon className="h-5 w-5" />}
         </Button>
 
-        <Link href="/auth/login">
+        <Link href="/auth/signin">
           <Button size="login">Login</Button>
         </Link>
       </div>

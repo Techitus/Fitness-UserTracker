@@ -15,6 +15,10 @@ export interface RegisterData {
     email: string;
     password: string;
   }
+  export interface LoginData {
+    email : string,
+    password : string
+  }
   
 const initialState : AuthState = {
     user : {} as authUserType,
@@ -57,3 +61,24 @@ export function register(user :RegisterData ){
         }
     }
 }
+export function login(user :LoginData ){
+    return async function loginThunk(dispatch : AppDispatch){
+        dispatch(setStatus(STATUS.LOADING))
+        try{
+            const response = await axios.post('/api/auth/signin',user)
+            if(response.status === 200){
+                dispatch(setStatus(STATUS.SUCCESS))
+                dispatch(setUser(response.data));
+            }else{
+                alert("Unexpected response");
+                dispatch(setStatus(STATUS.ERROR))
+                
+            }
+
+        }catch(error){
+            dispatch(setStatus(STATUS.ERROR))
+
+        }
+    }
+}
+

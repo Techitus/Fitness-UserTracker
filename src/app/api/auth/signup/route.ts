@@ -4,7 +4,6 @@ import { auth } from "@/database/schemas/auth.schema";
 import { eq } from "drizzle-orm";
 import { NextRequest, NextResponse } from "next/server";
 import bcrypt from "bcryptjs";
-import { mailerType, sendEmail } from "@/utils/mailer";
 import { v4 as uuidv4 } from 'uuid';
 export async function POST(request: NextRequest) {
   try {
@@ -58,12 +57,7 @@ export async function POST(request: NextRequest) {
       throw new Error("Failed to create user");
     }
 
-    // Send verification email
-    await sendEmail({
-      email,
-      emailType: mailerType.VERIFY,
-      userId: newUser.id
-    });
+    
 
     // Return success without exposing sensitive data
     return NextResponse.json({

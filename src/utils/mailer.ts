@@ -1,75 +1,37 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { database } from '@/database/database';
-import { auth } from '@/database/schemas/auth.schema';
-import { eq } from 'drizzle-orm';
 import nodemailer from 'nodemailer';
-import bcrypt from 'bcryptjs';
+import dotenv from 'dotenv';
 
-export enum mailerType {
-    VERIFY = 'VERIFY',
-    RESET = 'RESET',
+dotenv.config();
+
+interface IData {
+    to: string;
+    subject: string;
+    text: string;
 }
 
-interface Type {
-    email: string,
-    emailType: mailerType,
-    userId: string
-}
-
-export const sendEmail = async ({ email, emailType, userId }: Type) => {
+const sendEmail = async (data: IData) => {
     try {
-        // Ensure userId is valid before hashing
-        if (!userId) {
-            throw new Error('userId is required');
-        }
-
-        const hashedToken = await bcrypt.hash(userId.toString(), 10);
-        
-        // Prepare update data based on email type
-        const updateData = emailType === mailerType.VERIFY 
-            ? {
-                verifyToken: hashedToken,
-                verifyTokenExpiry: new Date(Date.now() + 3600000),
-              }
-            : {
-                forgotPasswordToken: hashedToken,
-                forgotPasswordTokenExpiry: new Date(Date.now() + 3600000),
-              };
-
-        // Update the database
-        await database
-            .update(auth)
-            .set(updateData)
-            .where(eq(auth.id, userId));
-
-        // Create email transporter
         const transporter = nodemailer.createTransport({
-            host: "sandbox.smtp.mailtrap.io",
-            port: 2525,
+            service: 'gmail',
             auth: {
                 user: process.env.MAIL_USER!,
-                pass: process.env.MAIL_PASS!
+                pass: process.env.MAIL_PASS!, 
             },
-            logger: true,
-            debug: true
+           
         });
 
-        // Prepare verification URL
-        const verificationUrl = `${process.env.DOMAIN}/${emailType === mailerType.VERIFY ? 'verifyemail' : 'resetpassword'}?token=${hashedToken}`;
-        
         const mailOptions = {
-            from: 'kamalondev@gmail.com',
-            to: email,
-            subject: emailType === mailerType.VERIFY ? "Verify your email" : "Reset your password",
-            html: `<p>Click <a href="${verificationUrl}">here</a> to ${emailType === mailerType.VERIFY ? "verify your email" : "reset your password"}
-            or copy and paste the link below in your browser. <br> ${verificationUrl}
-            </p>`
+            from:"Fitness Centre Team", 
+            to: data.to,
+            subject: data.subject,
+            text: data.text,
         };
 
-        const mailResponse = await transporter.sendMail(mailOptions);
-        return mailResponse;
+         await transporter.sendMail(mailOptions);
     } catch (err: any) {
         console.error('Email Sending Error:', err);
-        throw new Error("Email sending failed: " + err.message);
+        throw new Error('Email sending failed: ' + err.message);
     }
 };
+export default sendEmail

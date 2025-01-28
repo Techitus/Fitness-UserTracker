@@ -24,13 +24,11 @@ export async function POST(req:NextRequest){
     return NextResponse.json({error: "Please check your credentials..."}, {status: 404})
    }
      const tokenPayload = {
-        id : user.id,
-        username : user.username,
-        email : user.email
+        id : user.id
      }
-  const token =  jwt.sign(tokenPayload, process.env.TOKEN_SECRET!, { expiresIn: '1h' })
+  const token =  jwt.sign(tokenPayload, process.env.TOKEN_SECRET!, { expiresIn: '1d' })
 
- const response =   NextResponse.json({message : "User logged in successfully",sucess : true}, {status: 200},)
+ const response =   NextResponse.json({message : "User logged in successfully",sucess : true, token : token}, {status: 200},)
     response.cookies.set("token",token,{
         httpOnly : true
     })

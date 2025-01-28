@@ -7,6 +7,8 @@ function verifyEmail() {
     const [varified,setVerified] = useState(false)
     const [error, setError] = useState(false)
     
+    
+
   return (
     <div>verifyEmail</div>
   )

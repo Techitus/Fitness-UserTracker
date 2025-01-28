@@ -1,9 +1,7 @@
-/* eslint-disable react/no-unescaped-entities */
 "use client"
 
 import { FormEvent, useEffect, useState } from "react"
 import Image from "next/image"
-import Link from "next/link"
 import { Eye, EyeOff } from "lucide-react"
 import { Button } from "../ui/button"
 import { Card, CardContent, CardFooter, CardHeader } from "../ui/card"
@@ -50,12 +48,7 @@ export default function AuthForm({ mode,handleSubmit }: AuthFormProps, ) {
       setPasswordError("")
     }
   }
-  const onSubmit = async(e: FormEvent<HTMLFormElement>) => {
-    e.preventDefault() 
-    console.log('form submitted')
-    // handleSubmit(user) // Pass the user data to the handleSubmit function
-    console.log('success added')
-  }
+  
   const handleClick = async(e :FormEvent<HTMLButtonElement> )=>{
     e.preventDefault() 
    handleSubmit(user)
@@ -72,7 +65,7 @@ export default function AuthForm({ mode,handleSubmit }: AuthFormProps, ) {
         </CardHeader>
 
         <CardContent>
-          <form onSubmit={onSubmit}>
+          <form >
             <div className="space-y-4">
               {mode === "signup" && (
                 <div className="space-y-2">
@@ -148,23 +141,7 @@ export default function AuthForm({ mode,handleSubmit }: AuthFormProps, ) {
           <Button onClick={handleClick} className="w-full"  type="submit" disabled={buttonDisabled}>
             {buttonDisabled ? "Please fill all sections" : mode === "signin" ? "Sign In" : "Sign Up"}
           </Button>
-          <p className="text-sm text-center">
-            {mode === "signin" ? (
-              <>
-                Don't have an account?{" "}
-                <Link href="/auth/signup" className="text-primary hover:underline">
-                  Sign up
-                </Link>
-              </>
-            ) : (
-              <>
-                Already have an account?{" "}
-                <Link href="/auth/signin" className="text-primary hover:underline">
-                  Sign in
-                </Link>
-              </>
-            )}
-          </p>
+          
         </CardFooter>
       </Card>
     </div>
