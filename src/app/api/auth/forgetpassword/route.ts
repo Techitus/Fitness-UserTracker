@@ -32,6 +32,13 @@ export async function POST(req: NextRequest) {
 
         const otp = generateOtp();
 
+await database
+            .update(auth)
+            .set({
+                forgotPasswordToken: otp.toString(),
+                forgotPasswordTokenExpiry: new Date(),
+            })
+            .where(eq(auth.email, email));
         try {
             await sendEmail({
                 to: email,

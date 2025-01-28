@@ -3,11 +3,10 @@ export interface authUserType  {
   username : string,
   email : string,
   password : string,
-  isVerified : boolean,
   isAdmin : boolean,
-  verifyToken : string | null,
-  verifyTokenExpiry : Date | null,
+ token : string,
   forgotPasswordToken : string | null,
+  forgotPasswordTokenExpiry : string | null,
 }
 export interface AuthFormProps {
   mode: 'signup' | 'signin',
@@ -18,4 +17,8 @@ export interface userDataType {
   username :string,
   email :string,
   password : string
+}
+export interface loginDataType {
+  email: string;
+  password: string;
 }

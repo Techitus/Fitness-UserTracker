@@ -26,7 +26,7 @@ export async function POST(req:NextRequest){
      const tokenPayload = {
         id : user.id
      }
-  const token =  jwt.sign(tokenPayload, process.env.TOKEN_SECRET!, { expiresIn: '1d' })
+  const token =  jwt.sign(tokenPayload, process.env.TOKEN_SECRET!, { expiresIn: '1h' })
 
  const response =   NextResponse.json({message : "User logged in successfully",sucess : true, token : token}, {status: 200},)
     response.cookies.set("token",token,{

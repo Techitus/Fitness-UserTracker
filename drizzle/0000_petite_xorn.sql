@@ -23,15 +23,12 @@ CREATE TABLE "attendance" (
 );
 --> statement-breakpoint
 CREATE TABLE "auth" (
-	"id" uuid PRIMARY KEY DEFAULT '100ba883-9062-4072-8ca1-f11eebb8a906' NOT NULL,
+	"id" uuid PRIMARY KEY DEFAULT gen_random_uuid() NOT NULL,
 	"username" text NOT NULL,
 	"email" text NOT NULL,
 	"password" text NOT NULL,
-	"isVerified" boolean DEFAULT false,
 	"isAdmin" boolean DEFAULT false,
-	"verifyToken" text,
-	"verifyTokenExpiry" timestamp,
-	"forgotPasswordToken" text,
+	"forgotPasswordToken" numeric,
 	"forgotPasswordTokenExpiry" timestamp,
 	"createdAt" timestamp DEFAULT CURRENT_TIMESTAMP,
 	"updatedAt" timestamp DEFAULT CURRENT_TIMESTAMP,

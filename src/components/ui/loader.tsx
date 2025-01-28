@@ -20,7 +20,7 @@ const StyledWrapper = styled.div`
 
   circle {
    fill: none;
-   stroke: black);
+   stroke: background;
    stroke-width: 2;
    stroke-dasharray: 1, 200;
    stroke-dashoffset: 0;

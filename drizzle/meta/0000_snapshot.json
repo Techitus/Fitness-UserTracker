@@ -1,5 +1,5 @@
 {
-  "id": "99663079-3c13-4642-9ce6-2aa7373a8985",
+  "id": "2ae1fb3f-fcbd-4899-9043-9def425ce3b1",
   "prevId": "00000000-0000-0000-0000-000000000000",
   "version": "7",
   "dialect": "postgresql",
@@ -168,7 +168,7 @@
           "type": "uuid",
           "primaryKey": true,
           "notNull": true,
-          "default": "'100ba883-9062-4072-8ca1-f11eebb8a906'"
+          "default": "gen_random_uuid()"
         },
         "username": {
           "name": "username",
@@ -188,13 +188,6 @@
           "primaryKey": false,
           "notNull": true
         },
-        "isVerified": {
-          "name": "isVerified",
-          "type": "boolean",
-          "primaryKey": false,
-          "notNull": false,
-          "default": false
-        },
         "isAdmin": {
           "name": "isAdmin",
           "type": "boolean",
@@ -202,21 +195,9 @@
           "notNull": false,
           "default": false
         },
-        "verifyToken": {
-          "name": "verifyToken",
-          "type": "text",
-          "primaryKey": false,
-          "notNull": false
-        },
-        "verifyTokenExpiry": {
-          "name": "verifyTokenExpiry",
-          "type": "timestamp",
-          "primaryKey": false,
-          "notNull": false
-        },
         "forgotPasswordToken": {
           "name": "forgotPasswordToken",
-          "type": "text",
+          "type": "numeric",
           "primaryKey": false,
           "notNull": false
         },

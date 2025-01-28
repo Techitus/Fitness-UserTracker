@@ -33,11 +33,13 @@ const authSlice = createSlice({
        },
        setStatus(state : AuthState, action : PayloadAction<STATUS>){
         state.status = action.payload;
-       }
+       }, setToken(state: AuthState, action: PayloadAction<string>) {
+        state.user.token = action.payload;
+      },
     }
 
 })
-export const {setUser, setStatus} = authSlice.actions
+export const {setUser,setStatus ,setToken} = authSlice.actions
 export default authSlice.reducer;
 
 
@@ -67,8 +69,10 @@ export function login(user :LoginData ){
         try{
             const response = await axios.post('/api/auth/signin',user)
             if(response.status === 200){
+                const {token} = response.data
+                dispatch(setToken(token))
+                localStorage.setItem('token', token);
                 dispatch(setStatus(STATUS.SUCCESS))
-                dispatch(setUser(response.data));
             }else{
                 alert("Unexpected response");
                 dispatch(setStatus(STATUS.ERROR))

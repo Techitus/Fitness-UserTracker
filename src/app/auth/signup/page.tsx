@@ -38,9 +38,8 @@ const Page = () => {
                 duration: 3000
               }) 
                 setIsLoading(false);
-                setTimeout(() => {
-                    router.push("/auth/signin"); // 
-                }, 1000);
+               router.push("/auth/signin"); 
+              
             } else if (status === STATUS.ERROR) {
               toast({
                 variant: "destructive",

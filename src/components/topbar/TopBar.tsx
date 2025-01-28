@@ -14,6 +14,7 @@ interface TopBarProps {
 export default function TopBar({ onMenuClick, isSidebarOpen }: TopBarProps) {
   const [isDarkMode, setIsDarkMode] = useState(false)
   const [isMobile, setIsMobile] = useState(false)
+  const [isLoggedIn, setIsLoggedIn] = useState(false) 
 
   useEffect(() => {
     const isDark = document.documentElement.classList.contains("dark")
@@ -27,9 +28,18 @@ export default function TopBar({ onMenuClick, isSidebarOpen }: TopBarProps) {
     return () => window.removeEventListener("resize", checkMobile)
   }, [])
 
+  useEffect(() => {
+    const token = localStorage.getItem("token") 
+    setIsLoggedIn(!!token)
+  },[] )
   const toggleDarkMode = () => {
     setIsDarkMode(!isDarkMode)
     document.documentElement.classList.toggle("dark")
+  }
+
+  const handleLogout = () => {
+    localStorage.removeItem("token")
+    setIsLoggedIn(false)
   }
 
   return (
@@ -60,11 +70,16 @@ export default function TopBar({ onMenuClick, isSidebarOpen }: TopBarProps) {
           {isDarkMode ? <Sun className="h-5 w-5" /> : <Moon className="h-5 w-5" />}
         </Button>
 
-        <Link href="/auth/signin">
-          <Button size="login">Login</Button>
-        </Link>
+        {isLoggedIn ? (
+          <Button size="login" onClick={handleLogout}>
+            Logout
+          </Button>
+        ) : (
+          <Link href="/auth/signin">
+            <Button size="login">Login</Button>
+          </Link>
+        )}
       </div>
     </div>
   )
 }
-
