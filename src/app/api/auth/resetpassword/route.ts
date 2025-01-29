@@ -15,7 +15,7 @@ export async function POST(request: NextRequest) {
     }
 
     if (newPassword !== confirmPassword) {
-      return createResponse(400, "Passwords do not match");
+      return createResponse(400, "Passwords do not match 🙄");
     }
 
     const [user] = await database
@@ -24,7 +24,7 @@ export async function POST(request: NextRequest) {
       .where(eq(auth.email, email));
 
     if (!user) {
-      return createResponse(404, "User not found");
+      return createResponse(404, "User not found 😭");
     }
 
     const hashedPassword = await bcrypt.hash(newPassword, 10);
@@ -34,7 +34,7 @@ export async function POST(request: NextRequest) {
       .set({ password: hashedPassword })
       .where(eq(auth.email, email));
 
-    return createResponse(200, "Password updated successfully");
+    return createResponse(200, "Password updated successfully 😍");
   } catch (err: any) {
     console.error(err);
     return createResponse(500, "Internal Server Error");

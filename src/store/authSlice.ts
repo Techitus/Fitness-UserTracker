@@ -1,15 +1,18 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import { STATUS } from "@/types/status";
-import { authUserType } from "@/types/user.auth";
+import { AuthUserType, ResetPassword, VerifyOtpData } from "@/types/user.auth";
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { AppDispatch } from "./store";
 import axios from "axios";
 axios.defaults.headers.post["Content-Type"] = "application/json";
 
 interface AuthState {
-    user : authUserType,
+    user : AuthUserType,
     status : STATUS
 }
+ 
+
 export interface RegisterData {
     username: string;
     email: string;
@@ -21,14 +24,14 @@ export interface RegisterData {
   }
   
 const initialState : AuthState = {
-    user : {} as authUserType,
+    user : {} as AuthUserType,
     status : STATUS.LOADING
 }
 const authSlice = createSlice({
     name : 'auth',
     initialState,
     reducers : {
-       setUser(state : AuthState,action : PayloadAction<authUserType>){
+       setUser(state : AuthState,action : PayloadAction<AuthUserType>){
         state.user = action.payload;
        },
        setStatus(state : AuthState, action : PayloadAction<STATUS>){
@@ -86,3 +89,68 @@ export function login(user :LoginData ){
     }
 }
 
+export function forgetPassword(user : {email : string}){
+    return async function forgetPasswordThunk(dispatch:AppDispatch){
+        try{
+            const response = await axios.post('/api/auth/forgetpassword',user)
+            if(response.status === 200){
+                dispatch(setStatus(STATUS.SUCCESS))
+            }else{
+                dispatch(setStatus(STATUS.ERROR))
+            }
+        
+
+        }catch(err){
+            dispatch(setStatus(STATUS.ERROR))
+
+        }
+    }
+}
+export function verifyOtp(user: VerifyOtpData) {
+    return async function verifyOtpThunk(dispatch: AppDispatch) {
+      dispatch(setStatus(STATUS.LOADING));
+      try {
+        const response = await axios.post("/api/auth/verify-otp", user);
+  
+        if (response.status === 200) {
+          dispatch(setStatus(STATUS.SUCCESS));
+          return {
+            success: true,
+            message: "OTP verified successfully",
+          };
+        } else {
+          dispatch(setStatus(STATUS.ERROR));
+          return {
+            success: false,
+            message: "Invalid OTP",
+          };
+        }
+      } catch (error) {
+        dispatch(setStatus(STATUS.ERROR));
+        return {
+          success: false,
+          message: "Failed to verify OTP",
+        };
+      }
+    };
+  }
+
+  export function resetPassword(user: ResetPassword) {
+    return async function resetPasswordThunk(dispatch: AppDispatch) {
+      dispatch(setStatus(STATUS.LOADING));
+      try {
+        const response = await axios.post("/api/auth/resetpassword", user);
+        if (response.status === 200) {
+          dispatch(setStatus(STATUS.SUCCESS));
+          return { success: true, message: "Password reset successfully" };
+        } else {
+          dispatch(setStatus(STATUS.ERROR));
+          return { success: false, message: response.data?.message || "Unexpected error" };
+        }
+      } catch (err: any) {
+        dispatch(setStatus(STATUS.ERROR));
+        return { success: false, message: err.response?.data?.message || "Failed to reset password" };
+      }
+    };
+  }
+  
