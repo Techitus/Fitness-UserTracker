@@ -11,7 +11,7 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
     const { forgotPasswordToken, email } = await req.json();
 
     if (!forgotPasswordToken || !email) {
-      return createResponse(400, "Email and OTP are required");
+      return createResponse(400, "Email and OTP are required ");
     }
 
     const user = await database

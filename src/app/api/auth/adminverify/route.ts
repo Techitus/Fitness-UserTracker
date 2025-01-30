@@ -5,9 +5,9 @@ import generateOtp from "@/utils/generateOtp";
 import sendEmail from "@/utils/mailer";
 import createResponse from "@/utils/nextResponse";
 import { eq } from "drizzle-orm";
-import { NextRequest, NextResponse } from "next/server";
+import { NextRequest, NextResponse,  } from "next/server";
 
-export async function POST(req: NextRequest) {
+export async function POST(req: NextRequest):Promise<NextResponse>{
     try {
         const body = await req.json();
         const { email } = body;
@@ -42,23 +42,12 @@ await database
                 text: `Someone is just requested to verify them as a admin and the verification code is ${adminOtp}.`,
             });
 
-            return NextResponse.json(
-                {
-                    message: "Admin verification OTP sent successfully",
-                    success: true,
-                },
-                { status: 200 }
-            );
-        } catch (emailError) {
-            console.error("Email Sending Error:", emailError);
-            return NextResponse.json(
-                { error: "Failed to send OTP. Please try again later." },
-                { status: 500 }
-            );
+            return createResponse(200 ,"Admin verification OTP sent successfully 😍 ")
+        } catch (err : any) {
+            return createResponse(400,err, "Failed to send OTP. Please try again later.😴")
         }
     } catch (err:any) {
-        console.error("Request Error:", err);
-        return createResponse(500,err,"Something went wrong")
+        return createResponse(500,err,"Something went wrong 😩")
     }
     
 }
