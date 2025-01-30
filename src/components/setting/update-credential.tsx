@@ -1,21 +1,32 @@
 "use client"
 
-import { useState } from "react"
+import { FormEvent, useState } from "react"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
+import { ResetFormProps } from "@/types/user.auth"
+import { Eye, EyeOff } from "lucide-react"
 
-export function UpdateCredentials() {
-  const [email, setEmail] = useState("john.doe@acmecorp.com")
-  const [currentPassword, setCurrentPassword] = useState("")
-  const [newPassword, setNewPassword] = useState("")
-  const [confirmPassword, setConfirmPassword] = useState("")
+export function UpdateCredentials({resetChange}:ResetFormProps) {
+  const [showPassword, setShowPassword] = useState(false);
+const [user,setUser] = useState({
+  email: "",
+   newPassword : "",
+   confirmPassword : ""
+})
 
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault()
-    // Here you would typically send the update to your backend
-    console.log("Update submitted:", { email, currentPassword, newPassword, confirmPassword })
+const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const {name,value} = e.target
+  setUser({
+   ...user,
+   [name]: value
+  })
+}
+
+  const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
+      e.preventDefault()
+     resetChange(user)
   }
 
   return (
@@ -34,47 +45,67 @@ export function UpdateCredentials() {
             </Label>
             <Input
               id="email"
+              name = "email"
               type="email"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
+              value={user.email}
+              onChange={handleInputChange}
               className="dark:bg-black dark:text-white"
             />
           </div>
-          <div className="space-y-2">
-            <Label htmlFor="current-password" className="text-sm font-medium dark:text-gray-300">
-              Current Password
-            </Label>
-            <Input
-              id="current-password"
-              type="password"
-              value={currentPassword}
-              onChange={(e) => setCurrentPassword(e.target.value)}
-              className="dark:bg-black dark:text-white"
-            />
-          </div>
+          
           <div className="space-y-2">
             <Label htmlFor="new-password" className="text-sm font-medium dark:text-gray-300">
               New Password
             </Label>
-            <Input
-              id="new-password"
-              type="password"
-              value={newPassword}
-              onChange={(e) => setNewPassword(e.target.value)}
-              className="dark:bg-black dark:text-white"
-            />
+            <div className="relative">
+                  <Input
+                    id="password"
+                    type={showPassword ? "text" : "password"}
+                    name='newPassword'
+                    required
+                    value={user.newPassword}
+                    onChange={handleInputChange}
+
+                  />
+                  <button
+                    type="button"
+                    onClick={() => setShowPassword(!showPassword)}
+                    className="absolute inset-y-0 right-0 pr-3 flex items-center text-sm leading-5"
+                  >
+                    {showPassword ? (
+                      <EyeOff className="h-4 w-4 text-gray-500" />
+                    ) : (
+                      <Eye className="h-4 w-4 text-gray-500" />
+                    )}
+                  </button>
+                </div>
           </div>
           <div className="space-y-2">
             <Label htmlFor="confirm-password" className="text-sm font-medium dark:text-gray-300">
               Confirm New Password
             </Label>
-            <Input
-              id="confirm-password"
-              type="password"
-              value={confirmPassword}
-              onChange={(e) => setConfirmPassword(e.target.value)}
-              className="dark:bg-black dark:text-white"
-            />
+            <div className="relative">
+                  <Input
+                    id="password"
+                    type={showPassword ? "text" : "password"}
+                    name='confirmPassword'
+                    required
+                    value={user.confirmPassword}
+                    onChange={handleInputChange}
+
+                  />
+                  <button
+                    type="button"
+                    onClick={() => setShowPassword(!showPassword)}
+                    className="absolute inset-y-0 right-0 pr-3 flex items-center text-sm leading-5"
+                  >
+                    {showPassword ? (
+                      <EyeOff className="h-4 w-4 text-gray-500" />
+                    ) : (
+                      <Eye className="h-4 w-4 text-gray-500" />
+                    )}
+                  </button>
+                </div>
           </div>
         </CardContent>
         <CardFooter>
