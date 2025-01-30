@@ -6,6 +6,8 @@ export const auth = pgTable('auth',{
     email : text("email").unique().notNull(),
     password : text("password").notNull(),
     isAdmin : boolean('isAdmin').default(false),
+    isAdminToken : numeric('isAdminToken'),
+    isAdminTokenExpiry: timestamp('isAdminTokenExpiry'),
     forgotPasswordToken : numeric('forgotPasswordToken'), 
     forgotPasswordTokenExpiry: timestamp('forgotPasswordTokenExpiry'),
     createdAt : timestamp("createdAt").default(sql `CURRENT_TIMESTAMP`),

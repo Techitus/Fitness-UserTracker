@@ -11,7 +11,7 @@ export async function POST(request: NextRequest) {
     const { newPassword, confirmPassword, email } = await request.json();
 
     if (!newPassword || !confirmPassword || !email) {
-      return createResponse(400, "All fields are required");
+      return createResponse(400, "All fields are required 😒");
     }
 
     if (newPassword !== confirmPassword) {
@@ -37,6 +37,6 @@ export async function POST(request: NextRequest) {
     return createResponse(200, "Password updated successfully 😍");
   } catch (err: any) {
     console.error(err);
-    return createResponse(500, "Internal Server Error");
+    return createResponse(500, "Internal Server Error 😩");
   }
 }
