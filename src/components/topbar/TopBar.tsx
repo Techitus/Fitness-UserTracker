@@ -5,6 +5,9 @@ import { Input } from "@/components/ui/input"
 import { Button } from "@/components/ui/button"
 import { Moon, Sun, Search, Menu, X } from "lucide-react"
 import Link from "next/link"
+import { useRouter } from "next/navigation"
+import { useAppDispatch } from "@/hooks/hooks"
+import { logout } from "@/store/authSlice"
 
 interface TopBarProps {
   onMenuClick: () => void
@@ -15,7 +18,8 @@ export default function TopBar({ onMenuClick, isSidebarOpen }: TopBarProps) {
   const [isDarkMode, setIsDarkMode] = useState(false)
   const [isMobile, setIsMobile] = useState(false)
   const [isLoggedIn, setIsLoggedIn] = useState(false) 
-
+const router = useRouter()
+const dispatch = useAppDispatch()
   useEffect(() => {
     const isDark = document.documentElement.classList.contains("dark")
     setIsDarkMode(isDark)
@@ -38,8 +42,9 @@ export default function TopBar({ onMenuClick, isSidebarOpen }: TopBarProps) {
   }
 
   const handleLogout = () => {
-    localStorage.removeItem("token")
+     dispatch(logout())
     setIsLoggedIn(false)
+    router.push('/auth/signin')
   }
 
   return (

@@ -10,7 +10,9 @@ axios.defaults.headers.post["Content-Type"] = "application/json";
 
 const initialState : AuthState = {
     user : {} as AuthUserType,
-    status : STATUS.LOADING
+    status : STATUS.LOADING,
+    isAuthenticated: false
+
 }
 const authSlice = createSlice({
     name : 'auth',
@@ -23,11 +25,17 @@ const authSlice = createSlice({
         state.status = action.payload;
        }, setToken(state: AuthState, action: PayloadAction<string>) {
         state.user.token = action.payload;
-      },
+      },logout(state: AuthState) {
+        state.user = {} as AuthUserType;
+        state.isAuthenticated = false;
+        state.user.token = '';
+        localStorage.removeItem('token');
+        axios.post('/api/auth/logout');
+    }
     }
 
 })
-export const {setUser,setStatus ,setToken} = authSlice.actions
+export const {setUser,setStatus ,setToken,logout} = authSlice.actions
 export default authSlice.reducer;
 
 
@@ -51,27 +59,23 @@ export function register(user :RegisterData ){
         }
     }
 }
-export function login(user :LoginDataType ){
-    return async function loginThunk(dispatch : AppDispatch){
-        dispatch(setStatus(STATUS.LOADING))
-        try{
-            const response = await axios.post('/api/auth/signin',user)
-            if(response.status === 200){
-                const {token} = response.data
-                dispatch(setToken(token))
-                localStorage.setItem('token', token);
-                dispatch(setStatus(STATUS.SUCCESS))
-            }else{
-                alert("Unexpected response");
-                dispatch(setStatus(STATUS.ERROR))
-                
-            }
-
-        }catch(error){
-            dispatch(setStatus(STATUS.ERROR))
-
-        }
-    }
+export function login(user: LoginDataType) {
+  return async function loginThunk(dispatch: AppDispatch) {
+      dispatch(setStatus(STATUS.LOADING))
+      try {
+          const response = await axios.post('/api/auth/signin', user)
+          if (response.status === 200) {
+              const { token } = response.data
+              dispatch(setToken(token))
+              localStorage.setItem('token', token);
+              dispatch(setStatus(STATUS.SUCCESS))
+          } else {
+              dispatch(setStatus(STATUS.ERROR))
+          }
+      } catch (error) {
+          dispatch(setStatus(STATUS.ERROR))
+      }
+  }
 }
 
 export function forgetPassword(user : {email : string}){

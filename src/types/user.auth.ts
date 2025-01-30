@@ -3,7 +3,9 @@ import { STATUS } from "./status";
 /* eslint-disable @typescript-eslint/no-explicit-any */
 export interface AuthState {
   user : AuthUserType,
-  status : STATUS
+  status : STATUS,
+  isAuthenticated: boolean;
+
 }
 
 
