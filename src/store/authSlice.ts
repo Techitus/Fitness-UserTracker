@@ -1,28 +1,13 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import { STATUS } from "@/types/status";
-import { AuthUserType, ResetPassword, VerifyOtpData } from "@/types/user.auth";
+import { AuthState, AuthUserType,  LoginDataType, RegisterData, ResetPassword, VerifyOtpData } from "@/types/user.auth";
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { AppDispatch } from "./store";
 import axios from "axios";
 axios.defaults.headers.post["Content-Type"] = "application/json";
 
-interface AuthState {
-    user : AuthUserType,
-    status : STATUS
-}
- 
 
-export interface RegisterData {
-    username: string;
-    email: string;
-    password: string;
-  }
-  export interface LoginData {
-    email : string,
-    password : string
-  }
-  
 const initialState : AuthState = {
     user : {} as AuthUserType,
     status : STATUS.LOADING
@@ -66,7 +51,7 @@ export function register(user :RegisterData ){
         }
     }
 }
-export function login(user :LoginData ){
+export function login(user :LoginDataType ){
     return async function loginThunk(dispatch : AppDispatch){
         dispatch(setStatus(STATUS.LOADING))
         try{

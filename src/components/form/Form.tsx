@@ -376,14 +376,17 @@ export default function AuthForm({
                   </button>
                 </div>
               </div>
+              <div className=" ml-40 flex items-center justify-between text-foreground ">
               {passwordChangeError && <p className="text-sm text-red-500 dark:text-red-500">{passwordChangeError}</p>}
               <Button 
                 type="submit"
                 disabled={!newPassword || !confirmPassword}
-                className="w-3/4 items-center text-foreground font-bold  dark:bg-gray-700 dark:text-white dark:hover:bg-gray-600"
+                className=" w-3/4 items-center text-foreground font-bold  dark:bg-gray-700 dark:text-white dark:hover:bg-gray-600"
               >
                 Change Password
               </Button>
+              </div>
+
             </div>
           </form>
         </DialogContent>

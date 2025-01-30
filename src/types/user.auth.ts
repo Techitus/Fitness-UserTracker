@@ -1,6 +1,18 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
+import { STATUS } from "./status";
 
-// Type for authenticated user
+/* eslint-disable @typescript-eslint/no-explicit-any */
+export interface AuthState {
+  user : AuthUserType,
+  status : STATUS
+}
+
+
+export interface RegisterData {
+  username: string;
+  email: string;
+  password: string;
+}
+
 export interface AuthUserType {
   id: number | string;
   username: string;
@@ -12,35 +24,31 @@ export interface AuthUserType {
   forgotPasswordTokenExpiry: string | null;
 }
 
-// Props for the authentication form
 export interface AuthFormProps {
-  mode: "signin" | "signup"; // Determines if the form is for login or registration
-  handleSubmit: (user: UserDataType) => void; // Callback for form submission
-  handleForgotPassword?: (user: UserDataType) => void; // Optional callback for forgotten passwords
-  showOTPDialog?: boolean; // Whether the OTP dialog is shown
-  setShowOTPDialog?: (value: boolean) => void; // Setter for OTP dialog visibility
-  verifyOtp?: (data: VerifyOtpData) => void; // Optional callback for OTP verification
-  showPasswordChangeDialog?: boolean; // Whether the password change dialog is shown
-  setShowPasswordChangeDialog?: (value: boolean) => void; // Setter for password change dialog visibility
-  setShowPasswordChangeDialogProp?: any; // Additional prop for handling dialog visibility
-  handlePasswordChange?: (data: { email: string; newPassword: string }) => void; // Callback for changing the password
+  mode: "signin" | "signup"; 
+  handleSubmit: (user: UserDataType) => void; 
+  handleForgotPassword?: (user: UserDataType) => void; 
+  showOTPDialog?: boolean; 
+  setShowOTPDialog?: (value: boolean) => void; 
+  verifyOtp?: (data: VerifyOtpData) => void; 
+  showPasswordChangeDialog?: boolean; 
+  setShowPasswordChangeDialog?: (value: boolean) => void; 
+  setShowPasswordChangeDialogProp?: any; 
+  handlePasswordChange?: (data: { email: string; newPassword: string }) => void; 
 }
 
-// Data for OTP verification
 export interface VerifyOtpData {
-  email: string; // User's email address
+  email: string; 
   forgotPasswordToken: string; 
   status? : string
 }
 
-// Basic user data for authentication
 export interface UserDataType {
   username: string;
   email: string;
   password: string;
 }
 
-// Data for login
 export interface LoginDataType {
   email: string;
   password: string;

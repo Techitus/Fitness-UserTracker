@@ -26,7 +26,10 @@ const Page = () => {
   const LoginSubmit = async (user: UserDataType) => {
     setLoading(true)
     setIsPasswordReset(false)
-    await dispatch(login(user))
+    const response = await dispatch(login(user))
+    if (!response.success) {
+      setLoading(false)
+    }
   }
 
   const forgetPasswordSubmit = async (user: UserDataType) => {
@@ -112,6 +115,8 @@ const Page = () => {
           action: <ToastAction altText="Try again">Try again</ToastAction>,
         })
         setLoading(false)
+        // Don't navigate on error, stay on the signin page
+        return
       }
     }
   }, [status, loading, router, isPasswordReset, isVerifyingOtp, toast])
@@ -144,4 +149,3 @@ const Page = () => {
 }
 
 export default Page
-
