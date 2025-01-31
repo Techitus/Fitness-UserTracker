@@ -19,11 +19,11 @@ export function CompanyInfo() {
         
 
         <div className="space-y-4">
-          <Label className="text-lg font-semibold dark:text-white">Staff</Label>
+          <Label className="text-lg font-semibold ">Staff</Label>
           <div className="space-y-4 items-center justify-center flex">
           <StaffMember name="John Doe" role="Owner" imageUrl="/placeholder.svg?height=80&width=80" />
         </div>
-          <div className="grid grid-cols-2 sm:grid-cols-3 gap-4 bg-gray-100 dark:bg-black p-4 rounded-lg">
+          <div className=" grid grid-cols-2 sm:grid-cols-3 gap-4   p-4 rounded-lg">
             <StaffMember name="Jane Smith" role="Manager" imageUrl="/placeholder.svg?height=80&width=80" />
             <StaffMember name="Bob Johnson" role="Developer" imageUrl="/placeholder.svg?height=80&width=80" />
             <StaffMember name="Alice Brown" role="Designer" imageUrl="/placeholder.svg?height=80&width=80" />
