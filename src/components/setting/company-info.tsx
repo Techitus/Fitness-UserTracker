@@ -21,13 +21,14 @@ export function CompanyInfo() {
   const [otp, setOtp] = useState("")
   const [isVerified, setIsVerified] = useState(false)
   const [error, setError] = useState("")
-
   const handleOtpChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value.replace(/\D/g, "")
     setOtp(value)
     setError("")
   }
-
+  const handleChange =async ()=>{
+    setIsDialogOpen(true)
+  }
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault()
     if (otp.length !== 6) {
@@ -51,7 +52,7 @@ export function CompanyInfo() {
             Verified user <CheckCircle2 className="ml-1" size={16} />
           </span>
         ) : (
-          <button onClick={() => setIsDialogOpen(true)} className="text-blue-500 hover:underline">
+          <button  onClick={handleChange} className="text-blue-500 hover:underline">
             Verified as an admin?
           </button>
         )}

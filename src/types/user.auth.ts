@@ -37,6 +37,8 @@ export interface AuthFormProps {
   setShowPasswordChangeDialog?: (value: boolean) => void; 
   setShowPasswordChangeDialogProp?: any; 
   handlePasswordChange?: (data: { email: string; newPassword: string }) => void; 
+  handleOtpSend?: (user: UserDataType) => void; 
+
 }
 export interface ResetFormProps {
   resetChange: (user: ResetPassword) => void; 

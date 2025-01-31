@@ -143,3 +143,48 @@ export function verifyOtp(user: VerifyOtpData) {
     };
   }
   
+
+  export function verifyAdmin(user : {email : string}){
+    return async function verifyAdminThunk(dispatch:AppDispatch){
+        try{
+            const response = await axios.post('/api/auth/adminverify',user)
+            if(response.status === 200){
+                dispatch(setStatus(STATUS.SUCCESS))
+            }else{
+                dispatch(setStatus(STATUS.ERROR))
+            }
+        }catch(err){
+            dispatch(setStatus(STATUS.ERROR))
+
+        }
+    }
+}
+
+export function verifyAdminOtp(user: VerifyOtpData) {
+  return async function verifyAdminOtpThunk(dispatch: AppDispatch) {
+    dispatch(setStatus(STATUS.LOADING));
+    try {
+      const response = await axios.post("/api/auth/admin-otp", user);
+
+      if (response.status === 200) {
+        dispatch(setStatus(STATUS.SUCCESS));
+        return {
+          success: true,
+          message: "OTP verified successfully",
+        };
+      } else {
+        dispatch(setStatus(STATUS.ERROR));
+        return {
+          success: false,
+          message: "Invalid OTP",
+        };
+      }
+    } catch (error) {
+      dispatch(setStatus(STATUS.ERROR));
+      return {
+        success: false,
+        message: "Failed to verify OTP",
+      };
+    }
+  };
+}
