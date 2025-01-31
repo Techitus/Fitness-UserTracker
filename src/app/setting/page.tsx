@@ -23,6 +23,8 @@ export default function SettingsPage() {
         duration: 3000,
       })
     }
+    },[status])
+    useEffect(() =>{
     if(status === STATUS.ERROR){
       toast({
         description: "Failed to reset password...",

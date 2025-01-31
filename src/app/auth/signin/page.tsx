@@ -98,6 +98,7 @@ const Page = () => {
         setLoading(false)
         setTimeout(() => {
           router.push("/")
+          
         }, 1000)
       } else if (status === STATUS.SUCCESS && isPasswordReset && !isVerifyingOtp) {
         // Handle successful password reset request
