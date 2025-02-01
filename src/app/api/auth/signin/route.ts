@@ -1,57 +1,65 @@
-import { database } from "@/database/database"
-import { auth } from "@/database/schemas"
-import { eq } from "drizzle-orm"
-import { NextRequest, NextResponse } from "next/server"
-import bcrypt from 'bcryptjs'
-import jwt from 'jsonwebtoken'
-import dotenv from 'dotenv'
+import { database } from "@/database/database";
+import { auth } from "@/database/schemas";
+import { eq } from "drizzle-orm";
+import { NextRequest, NextResponse } from "next/server";
+import bcrypt from "bcryptjs";
+import jwt from "jsonwebtoken";
+import dotenv from "dotenv";
 
-dotenv.config({ path: '.env.local' })
+dotenv.config({ path: ".env.local" });
 
 export async function POST(req: NextRequest) {
     try {
-        const reqBody = await req.json()
-        const { email, password } = reqBody
+        const reqBody = await req.json();
+        const { email, password } = reqBody;
 
-        const [user] = await database.select().from(auth).where(eq(auth.email, email)).limit(1)
+        // Retrieve user from the database
+        const [user] = await database.select().from(auth).where(eq(auth.email, email)).limit(1);
 
+        // If user does not exist
         if (!user) {
-            return NextResponse.json({ error: "User not found" }, { status: 404 })
+            return NextResponse.json({ error: "User not found" }, { status: 404 });
         }
 
-        const validPassword = await bcrypt.compare(password, user.password)
+        // Validate password
+        const validPassword = await bcrypt.compare(password, user.password);
         if (!validPassword) {
-            return NextResponse.json({ error: "Please check your credentials..." }, { status: 404 })
+            return NextResponse.json(
+                { error: "Please check your credentials..." },
+                { status: 404 }
+            );
         }
 
+        // Create JWT token payload
         const tokenPayload = {
-            id: user.id
-        }
+            id: user.id,
+        };
 
-        const expirationTime = Math.floor(Date.now() / 1000) + (60 * 60) 
-        
-        const token = jwt.sign(
-            tokenPayload,
-            process.env.TOKEN_SECRET!,
-            { expiresIn: '1h' }
-        )
+        // Generate JWT token
+        const token = jwt.sign(tokenPayload, process.env.TOKEN_SECRET!, {
+            expiresIn: "1h",
+        });
 
+        // Return response including email
         const response = NextResponse.json(
-            { message: "User logged in successfully", success: true, token: token },
+            { 
+                message: "User logged in successfully", 
+                success: true, 
+                token: token, 
+                email: user.email // Add email here 
+            },
             { status: 200 }
-        )
+        );
 
+        // Set token as a cookie
         response.cookies.set("token", token, {
             httpOnly: true,
-            expires: new Date(expirationTime * 1000), 
-            secure: process.env.NODE_ENV === 'production', 
-            sameSite: 'lax',
-            path: '/'
-        })
+            path: "/",
+        });
 
-        return response
+        return response;
     } catch (error) {
-        return NextResponse.json({ error }, { status: 500 })
+        console.error("Error in login:", error);
+        return NextResponse.json({ error: "Internal server error" }, { status: 500 });
     }
 }
-

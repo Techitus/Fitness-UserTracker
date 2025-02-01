@@ -1,6 +1,6 @@
 "use client"
 
-import { useState } from "react"
+import { MouseEvent, useState } from "react"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Label } from "@/components/ui/label"
 import { StaffMember } from "./staff-member"
@@ -14,34 +14,47 @@ import {
 } from "@/components/ui/dialog"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
-import { CheckCircle2 } from "lucide-react"
+import { CheckCircle2, Loader, Loader2} from "lucide-react"
+import { isAdminFormProps, VerifyOtpAdmin } from "@/types/user.auth"
+import { useAppSelector } from "@/hooks/hooks"
 
-export function CompanyInfo() {
+export function CompanyInfo({ handleOtpSend, verifyOtpAdmin }: isAdminFormProps) {
+  const { email } = useAppSelector((state) => state.auth?.user || "")
   const [isDialogOpen, setIsDialogOpen] = useState(false)
   const [otp, setOtp] = useState("")
   const [isVerified, setIsVerified] = useState(false)
   const [error, setError] = useState("")
+  const [loading, setLoading] = useState(false)
+
+  const handleVerifyClick = async (e: MouseEvent<HTMLButtonElement>) => {
+    e.preventDefault()
+    if (!email) {
+      setError("Email is missing. Please log in again.😒")
+      return
+    }
+    setLoading(true)
+    await handleOtpSend({ email, isAdminToken: "" })
+    setLoading(false)
+    setIsDialogOpen(true)
+  }
+
   const handleOtpChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value.replace(/\D/g, "")
     setOtp(value)
     setError("")
   }
-  const handleChange =async ()=>{
-    setIsDialogOpen(true)
-  }
-  const handleSubmit = (e: React.FormEvent) => {
+
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
-    if (otp.length !== 6) {
-      setError("OTP must be 6 digits")
-      return
-    }
-    // Simulate OTP verification (in a real app, this would be an API call)
-    if (otp === "123456") {
+    setLoading(true)
+    try {
+      const verifyOtpData: VerifyOtpAdmin = { email, isAdminToken: otp }
+      await verifyOtpAdmin(verifyOtpData)
       setIsVerified(true)
-      setIsDialogOpen(false)
-    } else {
-      setError("Invalid OTP")
+    } catch (error) {
+      console.error("Error during verify otp:", error)
     }
+    setLoading(false)
   }
 
   return (
@@ -52,8 +65,8 @@ export function CompanyInfo() {
             Verified user <CheckCircle2 className="ml-1" size={16} />
           </span>
         ) : (
-          <button  onClick={handleChange} className="text-blue-500 hover:underline">
-            Verified as an admin?
+          <button onClick={handleVerifyClick} className="text-blue-500 hover:underline" disabled={loading}>
+            {loading ? <Loader className="animate-spin" size={16} /> : "Verify as an admin?"}
           </button>
         )}
       </div>
@@ -62,7 +75,7 @@ export function CompanyInfo() {
         <CardTitle className="text-2xl dark:text-white">Company Information</CardTitle>
         <div className="text-gray-500">
           <h1>Xyz Company</h1>
-          <p>Address: Lorem ipsum dolor adipisicing., Butwal</p>
+          <p>Address: Lorem ipsum dolor sit amet., Butwal</p>
           <p>Phone: +1 123-456-7890</p>
           <p>Email: john@example.com</p>
         </div>
@@ -87,7 +100,7 @@ export function CompanyInfo() {
         <DialogContent>
           <DialogHeader>
             <DialogTitle>Admin Verification</DialogTitle>
-            <DialogDescription>Please contact Admin to get verification one time password</DialogDescription>
+            <DialogDescription>Please contact Admin to get the verification one-time password.</DialogDescription>
           </DialogHeader>
           <form onSubmit={handleSubmit}>
             <div className="grid gap-4 py-4">
@@ -100,14 +113,16 @@ export function CompanyInfo() {
                   value={otp}
                   onChange={handleOtpChange}
                   className="col-span-3"
-                  placeholder="Enter 6-digit OTP"
+                  placeholder="Enter 4-digit OTP"
                   maxLength={6}
                 />
               </div>
               {error && <p className="text-red-500 text-sm">{error}</p>}
             </div>
             <DialogFooter>
-              <Button type="submit">Verify</Button>
+              <Button type="submit" disabled={otp.length !== 4 || loading}>
+                {loading ? <Loader2 className="animate-spin" size={16} /> : "Verify"}
+              </Button>
             </DialogFooter>
           </form>
         </DialogContent>
@@ -115,4 +130,3 @@ export function CompanyInfo() {
     </Card>
   )
 }
-

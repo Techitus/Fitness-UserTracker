@@ -18,10 +18,10 @@ export interface RegisterData {
 export interface AuthUserType {
   id: number | string;
   username: string;
-  email: string;
+  email: string ;
   password: string;
   isAdmin: boolean;
-  token: string;
+  token: string ;
   forgotPasswordToken: string | null;
   forgotPasswordTokenExpiry: string | null;
 }
@@ -37,9 +37,13 @@ export interface AuthFormProps {
   setShowPasswordChangeDialog?: (value: boolean) => void; 
   setShowPasswordChangeDialogProp?: any; 
   handlePasswordChange?: (data: { email: string; newPassword: string }) => void; 
-  handleOtpSend?: (user: UserDataType) => void; 
 
 }
+export interface isAdminFormProps {
+  handleOtpSend: (data:VerifyOtpAdmin ) => void; 
+  verifyOtpAdmin:  (data: {email : string}) => void; 
+}
+
 export interface ResetFormProps {
   resetChange: (user: ResetPassword) => void; 
 }
@@ -49,6 +53,14 @@ export interface VerifyOtpData {
   forgotPasswordToken: string; 
   status? : string
 }
+
+export interface VerifyOtpAdmin {
+  email: string ; 
+  isAdminToken : string,
+  status? : string
+  
+}
+
 
 export interface UserDataType {
   username: string;

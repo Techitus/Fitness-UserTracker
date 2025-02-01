@@ -59,7 +59,7 @@ const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
             </Label>
             <div className="relative">
                   <Input
-                    id="password"
+                    id="new-password"
                     type={showPassword ? "text" : "password"}
                     name='newPassword'
                     required

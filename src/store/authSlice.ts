@@ -8,18 +8,21 @@ import axios from "axios";
 axios.defaults.headers.post["Content-Type"] = "application/json";
 
 
-const initialState : AuthState = {
-    user : {} as AuthUserType,
-    status : STATUS.LOADING,
-    isAuthenticated: false
+const savedToken = localStorage.getItem('token');
+const savedEmail = localStorage.getItem('email');
 
-}
+const initialState: AuthState = {
+    user: savedToken ? { token: savedToken, email: savedEmail } as AuthUserType : {} as AuthUserType,
+    status: STATUS.LOADING,
+    isAuthenticated: !!savedToken,
+};
 const authSlice = createSlice({
     name : 'auth',
     initialState,
     reducers : {
        setUser(state : AuthState,action : PayloadAction<AuthUserType>){
         state.user = action.payload;
+         state.isAuthenticated = true;
        },
        setStatus(state : AuthState, action : PayloadAction<STATUS>){
         state.status = action.payload;
@@ -31,11 +34,13 @@ const authSlice = createSlice({
         state.user.token = '';
         localStorage.removeItem('token');
         axios.post('/api/auth/logout');
-    }
+    },setEmail(state: AuthState, action: PayloadAction<string>) {
+      state.user.email = action.payload;
+    },
     }
 
 })
-export const {setUser,setStatus ,setToken,logout} = authSlice.actions
+export const {setUser,setStatus ,setToken,setEmail,logout} = authSlice.actions
 export default authSlice.reducer;
 
 
@@ -47,6 +52,7 @@ export function register(user :RegisterData ){
             if(response.status === 200){
                 dispatch(setStatus(STATUS.SUCCESS))
                 dispatch(setUser(response.data));
+                
             }else{
                 alert("Unexpected response");
                 dispatch(setStatus(STATUS.ERROR))
@@ -65,9 +71,11 @@ export function login(user: LoginDataType) {
       try {
           const response = await axios.post('/api/auth/signin', user)
           if (response.status === 200) {
-              const { token } = response.data
+              const { token, email } = response.data
               dispatch(setToken(token))
+              dispatch(setEmail(email))
               localStorage.setItem('token', token);
+              localStorage.setItem('email', email); 
               dispatch(setStatus(STATUS.SUCCESS))
           } else {
               dispatch(setStatus(STATUS.ERROR))
