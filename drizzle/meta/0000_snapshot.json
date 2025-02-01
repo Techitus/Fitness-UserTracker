@@ -1,5 +1,5 @@
 {
-  "id": "2ae1fb3f-fcbd-4899-9043-9def425ce3b1",
+  "id": "8adbd5c8-af1d-47b5-80bb-66047f1e9d8b",
   "prevId": "00000000-0000-0000-0000-000000000000",
   "version": "7",
   "dialect": "postgresql",
@@ -10,9 +10,10 @@
       "columns": {
         "id": {
           "name": "id",
-          "type": "serial",
+          "type": "uuid",
           "primaryKey": true,
-          "notNull": true
+          "notNull": true,
+          "default": "gen_random_uuid()"
         },
         "userName": {
           "name": "userName",
@@ -99,13 +100,14 @@
       "columns": {
         "id": {
           "name": "id",
-          "type": "serial",
+          "type": "uuid",
           "primaryKey": true,
-          "notNull": true
+          "notNull": true,
+          "default": "gen_random_uuid()"
         },
         "userId": {
           "name": "userId",
-          "type": "integer",
+          "type": "uuid",
           "primaryKey": false,
           "notNull": false
         },
@@ -194,6 +196,18 @@
           "primaryKey": false,
           "notNull": false,
           "default": false
+        },
+        "isAdminToken": {
+          "name": "isAdminToken",
+          "type": "numeric",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "isAdminTokenExpiry": {
+          "name": "isAdminTokenExpiry",
+          "type": "timestamp",
+          "primaryKey": false,
+          "notNull": false
         },
         "forgotPasswordToken": {
           "name": "forgotPasswordToken",

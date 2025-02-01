@@ -11,7 +11,7 @@ import { useEffect, useState } from "react"
 import { useRouter } from "next/navigation"
 import Loader from "@/components/ui/loader"
 import { useAppDispatch, useAppSelector } from "@/hooks/hooks"
-import { AppDispatch } from "@/store/store" // Make sure this path is correct
+import { AppDispatch } from "@/store/store" 
 
 const Page = () => {
   const { toast } = useToast()

@@ -8,8 +8,8 @@ import axios from "axios";
 axios.defaults.headers.post["Content-Type"] = "application/json";
 
 
-const savedToken = localStorage.getItem('token');
-const savedEmail = localStorage.getItem('email');
+const savedToken = typeof window !== "undefined" ? localStorage.getItem('token') : null;
+const savedEmail = typeof window !== "undefined" ? localStorage.getItem('email') : null;
 const initialState: AuthState = {
     user: savedToken ? { token: savedToken, email: savedEmail } as AuthUserType : {} as AuthUserType,
     status: STATUS.LOADING,

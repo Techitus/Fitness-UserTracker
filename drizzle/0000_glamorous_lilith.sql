@@ -1,5 +1,5 @@
 CREATE TABLE "userdatas" (
-	"id" serial PRIMARY KEY NOT NULL,
+	"id" uuid PRIMARY KEY DEFAULT gen_random_uuid() NOT NULL,
 	"userName" varchar(20) NOT NULL,
 	"email" text,
 	"address" text NOT NULL,
@@ -14,8 +14,8 @@ CREATE TABLE "userdatas" (
 );
 --> statement-breakpoint
 CREATE TABLE "attendance" (
-	"id" serial PRIMARY KEY NOT NULL,
-	"userId" integer,
+	"id" uuid PRIMARY KEY DEFAULT gen_random_uuid() NOT NULL,
+	"userId" uuid,
 	"isPresent" boolean DEFAULT false,
 	"day" integer NOT NULL,
 	"createdAt" timestamp DEFAULT CURRENT_TIMESTAMP,
@@ -28,6 +28,8 @@ CREATE TABLE "auth" (
 	"email" text NOT NULL,
 	"password" text NOT NULL,
 	"isAdmin" boolean DEFAULT false,
+	"isAdminToken" numeric,
+	"isAdminTokenExpiry" timestamp,
 	"forgotPasswordToken" numeric,
 	"forgotPasswordTokenExpiry" timestamp,
 	"createdAt" timestamp DEFAULT CURRENT_TIMESTAMP,

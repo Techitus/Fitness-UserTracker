@@ -47,6 +47,7 @@ export async function POST(request: NextRequest) {
         password: hashedPassword,
         forgotPasswordToken: null,
         forgotPasswordTokenExpiry: null,
+      
       })
       .returning();
 

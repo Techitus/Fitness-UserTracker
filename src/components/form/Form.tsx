@@ -135,7 +135,6 @@ export default function AuthForm({
       };
       await handlePasswordChange(resetPasswordData);
     }
-    // Reset fields after submission
     setNewPassword("");
     setConfirmPassword("");
     setPasswordChangeError("");
