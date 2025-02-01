@@ -51,6 +51,7 @@ export function CompanyInfo({ handleOtpSend, verifyOtpAdmin }: isAdminFormProps)
       const verifyOtpData: VerifyOtpAdmin = { email, isAdminToken: otp }
       await verifyOtpAdmin(verifyOtpData)
       setIsVerified(true)
+      setIsDialogOpen(false)
     } catch (error) {
       console.error("Error during verify otp:", error)
     }
@@ -114,7 +115,7 @@ export function CompanyInfo({ handleOtpSend, verifyOtpAdmin }: isAdminFormProps)
                   onChange={handleOtpChange}
                   className="col-span-3"
                   placeholder="Enter 4-digit OTP"
-                  maxLength={6}
+                  maxLength={4}
                 />
               </div>
               {error && <p className="text-red-500 text-sm">{error}</p>}

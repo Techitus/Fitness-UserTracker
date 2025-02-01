@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import { STATUS } from "@/types/status";
-import { AuthState, AuthUserType,  LoginDataType, RegisterData, ResetPassword, VerifyOtpData } from "@/types/user.auth";
+import { AuthState, AuthUserType,  LoginDataType, RegisterData, ResetPassword, VerifyOtpAdmin, VerifyOtpData } from "@/types/user.auth";
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { AppDispatch } from "./store";
 import axios from "axios";
@@ -168,7 +168,7 @@ export function verifyOtp(user: VerifyOtpData) {
     }
 }
 
-export function verifyAdminOtp(user: VerifyOtpData) {
+export function verifyAdminOtp(user: VerifyOtpAdmin) {
   return async function verifyAdminOtpThunk(dispatch: AppDispatch) {
     dispatch(setStatus(STATUS.LOADING));
     try {
@@ -178,13 +178,13 @@ export function verifyAdminOtp(user: VerifyOtpData) {
         dispatch(setStatus(STATUS.SUCCESS));
         return {
           success: true,
-          message: "OTP verified successfully",
+          message: "Congratulations!! Now you are verified user 🥰",
         };
       } else {
         dispatch(setStatus(STATUS.ERROR));
         return {
           success: false,
-          message: "Invalid OTP",
+          message: "Invalid OTP ",
         };
       }
     } catch (error) {

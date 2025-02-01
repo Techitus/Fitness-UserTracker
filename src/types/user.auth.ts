@@ -41,7 +41,7 @@ export interface AuthFormProps {
 }
 export interface isAdminFormProps {
   handleOtpSend: (data:VerifyOtpAdmin ) => void; 
-  verifyOtpAdmin:  (data: {email : string}) => void; 
+  verifyOtpAdmin:  (data: {email : string, isAdminToken :string}) => void; 
 }
 
 export interface ResetFormProps {

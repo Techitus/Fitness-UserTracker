@@ -4,9 +4,9 @@ import { UpdateCredentials } from "@/components/setting/update-credential";
 import { Separator } from "@/components/ui/separator";
 import { useAppDispatch, useAppSelector } from "@/hooks/hooks";
 import { toast } from "@/hooks/use-toast";
-import { resetPassword, verifyAdmin } from "@/store/authSlice";
+import { resetPassword, verifyAdmin, verifyAdminOtp } from "@/store/authSlice";
 import { STATUS } from "@/types/status";
-import { ResetPassword } from "@/types/user.auth";
+import { ResetPassword, VerifyOtpAdmin } from "@/types/user.auth";
 import { useEffect } from "react";
 
 export default function SettingsPage() {
@@ -48,13 +48,32 @@ export default function SettingsPage() {
     } catch (err) {
       console.error("Admin verification failed", err);
     }
+  }
+  const verifyOtp = async (data: VerifyOtpAdmin) => {
+    if (!email) {
+      console.error("Email not found. User must be logged in.");
+      return;
+    }
+    try {
+      await dispatch(verifyAdminOtp({ email, isAdminToken: data.isAdminToken }));
+      toast({
+        description: "Congratulations!! Now you are verified user 🥰",
+        duration: 3000,
+      });
+    } catch (err) {
+      console.error("Admin OTP verification failed", err);
+      toast({
+        description: "Failed to verify OTP.😭",
+        duration: 3000,
+      });
+    }
   };
   
   return (
     <div className="container mx-auto py-10 px-4">
       <div className="flex flex-col lg:flex-row gap-10">
         <div className="w-full lg:w-1/2">
-          <CompanyInfo handleOtpSend={isAdmin}/>
+          <CompanyInfo verifyOtpAdmin={verifyOtp} handleOtpSend={isAdmin}/>
         </div>
         <div className="hidden lg:block">
           <Separator orientation="vertical" />
