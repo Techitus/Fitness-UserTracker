@@ -11,6 +11,7 @@ import { useEffect, useState } from "react"
 import { useRouter } from "next/navigation"
 import Loader from "@/components/ui/loader"
 import { useAppDispatch, useAppSelector } from "@/hooks/hooks"
+import { AppDispatch } from "@/store/store" // Make sure this path is correct
 
 const Page = () => {
   const { toast } = useToast()
@@ -19,78 +20,92 @@ const Page = () => {
   const [showPasswordChangeDialog, setShowPasswordChangeDialog] = useState(false)
   const [isPasswordReset, setIsPasswordReset] = useState(false)
   const [isVerifyingOtp, setIsVerifyingOtp] = useState(false)
-  const dispatch = useAppDispatch()
+  const dispatch: AppDispatch = useAppDispatch()
   const router = useRouter()
   const { status } = useAppSelector((state) => state.auth)
 
   const LoginSubmit = async (user: UserDataType) => {
-    setLoading(true)
-    setIsPasswordReset(false)
-    const response = await dispatch(login(user))
-    if (!response.success) {
+    try {
+      setLoading(true)
+      setIsPasswordReset(false)
+      const result = await dispatch(login(user))
+      return { success: true, data: result }
+    } catch (error) {
+      return { success: false, message: (error as Error).message }
+    } finally {
       setLoading(false)
     }
   }
 
   const forgetPasswordSubmit = async (user: UserDataType) => {
-    setLoading(true)
-    setIsPasswordReset(true)
-    await dispatch(forgetPassword({ email: user.email }))
-    setShowOTPDialog(true)
-    setLoading(false)
+    try {
+      setLoading(true)
+      setIsPasswordReset(true)
+      await dispatch(forgetPassword({ email: user.email }))
+      setShowOTPDialog(true)
+      return { success: true }
+    } catch (error) {
+      return { success: false, message: (error as Error).message }
+    } finally {
+      setLoading(false)
+    }
   }
 
-  const verifyOtpSubmit = async (data: VerifyOtpData): Promise<void> => {
-    setLoading(true)
-    setIsVerifyingOtp(true)
-
-    const response = await dispatch(verifyOtp(data))
-
-    if (response.success) {
+  const verifyOtpSubmit = async (data: VerifyOtpData) => {
+    try {
+      setLoading(true)
+      setIsVerifyingOtp(true)
+      const result = await dispatch(verifyOtp(data))
+      
       toast({
         description: "OTP verified successfully",
         duration: 3000,
       })
       setShowOTPDialog(false)
       setShowPasswordChangeDialog(true)
-    } else {
+      return { success: true, data: result }
+    } catch (error) {
       toast({
         variant: "destructive",
         title: "Verification Failed",
-        description: response.message || "Invalid OTP",
+        description: (error as Error).message || "Invalid OTP",
         action: <ToastAction altText="Try again">Try again</ToastAction>,
       })
+      return { success: false, message: (error as Error).message }
+    } finally {
+      setLoading(false)
+      setIsVerifyingOtp(false)
     }
-
-    setLoading(false)
-    setIsVerifyingOtp(false)
   }
 
   const handlePasswordChange = async (data: ResetPassword) => {
-    setLoading(true)
-    const response = await dispatch(resetPassword(data))
-    if (response.success) {
+    try {
+      setLoading(true)
+      const result = await dispatch(resetPassword(data))
+      
       toast({
         description: "Password changed successfully",
         duration: 3000,
       })
       setShowPasswordChangeDialog(false)
       router.push("/auth/signin")
-    } else {
+      return { success: true, data: result }
+    } catch (error) {
       toast({
         variant: "destructive",
         title: "Password Change Failed",
-        description: response.message || "Unable to change password",
+        description: (error as Error).message || "Unable to change password",
         action: <ToastAction altText="Try again">Try again</ToastAction>,
       })
+      return { success: false, message: (error as Error).message }
+    } finally {
+      setLoading(false)
     }
-    setLoading(false)
   }
 
   useEffect(() => {
     if (loading) {
       if (status === STATUS.SUCCESS && !isPasswordReset && !isVerifyingOtp) {
-        // Handle successful login
         toast({
           description: "User Logged in successfully...",
           duration: 3000,
@@ -98,17 +113,14 @@ const Page = () => {
         setLoading(false)
         setTimeout(() => {
           router.push("/")
-          
         }, 1000)
       } else if (status === STATUS.SUCCESS && isPasswordReset && !isVerifyingOtp) {
-        // Handle successful password reset request
         toast({
           description: "OTP sent successfully to your email",
           duration: 3000,
         })
         setLoading(false)
       } else if (status === STATUS.ERROR) {
-        // Handle any errors
         toast({
           variant: "destructive",
           title: "Uh oh! Something went wrong.",
@@ -116,7 +128,6 @@ const Page = () => {
           action: <ToastAction altText="Try again">Try again</ToastAction>,
         })
         setLoading(false)
-        // Don't navigate on error, stay on the signin page
         return
       }
     }

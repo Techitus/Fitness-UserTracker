@@ -14,17 +14,16 @@ import {
 } from "@/components/ui/dialog"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
-import { CheckCircle2, Loader, Loader2} from "lucide-react"
+import { CheckCircle2, Loader, Loader2 } from "lucide-react"
 import { isAdminFormProps, VerifyOtpAdmin } from "@/types/user.auth"
 import { useAppSelector } from "@/hooks/hooks"
 
 export function CompanyInfo({ handleOtpSend, verifyOtpAdmin }: isAdminFormProps) {
-  const { email } = useAppSelector((state) => state.auth?.user || "")
+  const { email, isAdmin } = useAppSelector((state) => state.auth?.user || { email: "", isAdmin: false })
   const [isDialogOpen, setIsDialogOpen] = useState(false)
   const [otp, setOtp] = useState("")
-  const [isVerified, setIsVerified] = useState(false)
-  const [error, setError] = useState("")
   const [loading, setLoading] = useState(false)
+  const [error, setError] = useState("")
 
   const handleVerifyClick = async (e: MouseEvent<HTMLButtonElement>) => {
     e.preventDefault()
@@ -50,10 +49,10 @@ export function CompanyInfo({ handleOtpSend, verifyOtpAdmin }: isAdminFormProps)
     try {
       const verifyOtpData: VerifyOtpAdmin = { email, isAdminToken: otp }
       await verifyOtpAdmin(verifyOtpData)
-      setIsVerified(true)
       setIsDialogOpen(false)
     } catch (error) {
       console.error("Error during verify otp:", error)
+      setError("Failed to verify OTP. Please try again.")
     }
     setLoading(false)
   }
@@ -61,12 +60,16 @@ export function CompanyInfo({ handleOtpSend, verifyOtpAdmin }: isAdminFormProps)
   return (
     <Card className="dark:bg-black relative">
       <div className="absolute top-4 right-4">
-        {isVerified ? (
+        {isAdmin ? (
           <span className="text-green-500 flex items-center">
             Verified user <CheckCircle2 className="ml-1" size={16} />
           </span>
         ) : (
-          <button onClick={handleVerifyClick} className="text-blue-500 hover:underline" disabled={loading}>
+          <button 
+            onClick={handleVerifyClick} 
+            className="text-blue-500 hover:underline" 
+            disabled={loading}
+          >
             {loading ? <Loader className="animate-spin" size={16} /> : "Verify as an admin?"}
           </button>
         )}
@@ -131,3 +134,5 @@ export function CompanyInfo({ handleOtpSend, verifyOtpAdmin }: isAdminFormProps)
     </Card>
   )
 }
+
+export default CompanyInfo

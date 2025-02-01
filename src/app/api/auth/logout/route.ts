@@ -6,8 +6,17 @@ export async function POST() {
         { status: 200 }
     );
 
-    // Clear the token cookie
     response.cookies.set("token", "", {
+        httpOnly: true,
+        expires: new Date(0)
+    });
+
+    response.cookies.set("email", "", {
+        httpOnly: true,
+        expires: new Date(0)
+    });
+
+    response.cookies.set("isAdmin", "", {
         httpOnly: true,
         expires: new Date(0)
     });

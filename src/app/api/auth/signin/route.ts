@@ -13,15 +13,12 @@ export async function POST(req: NextRequest) {
         const reqBody = await req.json();
         const { email, password } = reqBody;
 
-        // Retrieve user from the database
         const [user] = await database.select().from(auth).where(eq(auth.email, email)).limit(1);
 
-        // If user does not exist
         if (!user) {
             return NextResponse.json({ error: "User not found" }, { status: 404 });
         }
 
-        // Validate password
         const validPassword = await bcrypt.compare(password, user.password);
         if (!validPassword) {
             return NextResponse.json(
@@ -40,18 +37,18 @@ export async function POST(req: NextRequest) {
             expiresIn: "1h",
         });
 
-        // Return response including email
         const response = NextResponse.json(
             { 
                 message: "User logged in successfully", 
                 success: true, 
                 token: token, 
-                email: user.email // Add email here 
+                email: user.email,
+                isAdmin : user.isAdmin
+                  
             },
             { status: 200 }
         );
 
-        // Set token as a cookie
         response.cookies.set("token", token, {
             httpOnly: true,
             path: "/",

@@ -10,7 +10,6 @@ axios.defaults.headers.post["Content-Type"] = "application/json";
 
 const savedToken = localStorage.getItem('token');
 const savedEmail = localStorage.getItem('email');
-
 const initialState: AuthState = {
     user: savedToken ? { token: savedToken, email: savedEmail } as AuthUserType : {} as AuthUserType,
     status: STATUS.LOADING,
@@ -36,11 +35,13 @@ const authSlice = createSlice({
         axios.post('/api/auth/logout');
     },setEmail(state: AuthState, action: PayloadAction<string>) {
       state.user.email = action.payload;
-    },
+    },setIsAdmin(state: AuthState, action: PayloadAction<boolean>) {
+      state.user.isAdmin = action.payload;
     }
 
+} 
 })
-export const {setUser,setStatus ,setToken,setEmail,logout} = authSlice.actions
+export const {setUser,setStatus ,setToken,setEmail,logout,setIsAdmin} = authSlice.actions
 export default authSlice.reducer;
 
 
@@ -67,24 +68,34 @@ export function register(user :RegisterData ){
 }
 export function login(user: LoginDataType) {
   return async function loginThunk(dispatch: AppDispatch) {
-      dispatch(setStatus(STATUS.LOADING))
-      try {
-          const response = await axios.post('/api/auth/signin', user)
-          if (response.status === 200) {
-              const { token, email } = response.data
-              dispatch(setToken(token))
-              dispatch(setEmail(email))
-              localStorage.setItem('token', token);
-              localStorage.setItem('email', email); 
-              dispatch(setStatus(STATUS.SUCCESS))
-          } else {
-              dispatch(setStatus(STATUS.ERROR))
-          }
-      } catch (error) {
-          dispatch(setStatus(STATUS.ERROR))
+    dispatch(setStatus(STATUS.LOADING));
+    try {
+      const response = await axios.post('/api/auth/signin/', user);
+      if (response.status === 200) {
+        const { token, email, isAdmin } = response.data;
+        localStorage.setItem('token', token);
+        localStorage.setItem('email', email);
+        localStorage.setItem('isAdmin',isAdmin)
+        dispatch(setUser({
+          token, email, isAdmin,
+          id: "",
+          username: "",
+          password: "",
+          forgotPasswordToken: null,
+          forgotPasswordTokenExpiry: null
+        }));
+        dispatch(setStatus(STATUS.SUCCESS));
+      } else {
+        alert("Unexpected response");
+        dispatch(setStatus(STATUS.ERROR));
       }
-  }
+    } catch (error) {
+      console.error("Login error:", error);
+      dispatch(setStatus(STATUS.ERROR));
+    }
+  };
 }
+
 
 export function forgetPassword(user : {email : string}){
     return async function forgetPasswordThunk(dispatch:AppDispatch){
