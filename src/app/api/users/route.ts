@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { database } from "@/database/database";
 import { userDatas } from "@/database/schemas";
@@ -57,5 +58,24 @@ export async function POST(request: NextRequest) {
         return createResponse(201, "User created successfully ✅", newUser);
     } catch (err: any) {
         return createResponse(500, err.message || err, "Internal Server Error");
+    }
+}
+
+
+export async function GET(request:NextRequest){
+    try{
+        const { user, error, status } = verifyToken(request);
+        if(error) return createResponse(status, error);
+
+        if(!user?.isAdmin){
+            return createResponse(403, "Access denied. Admins only ��");
+        }
+
+        const userInfo = await database.select().from(userDatas);
+
+        return createResponse(200, "User Data fetched successfully", userInfo);
+
+    }catch(err){
+        return createResponse(500, "Internal Server Error");
     }
 }
