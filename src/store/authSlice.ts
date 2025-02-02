@@ -70,7 +70,7 @@ export function login(user: LoginDataType) {
   return async function loginThunk(dispatch: AppDispatch) {
     dispatch(setStatus(STATUS.LOADING));
     try {
-      const response = await axios.post('/api/auth/signin/', user);
+      const response = await axios.post('/api/auth/signin', user);
       if (response.status === 200) {
         const { token, email, isAdmin } = response.data;
         localStorage.setItem('token', token);

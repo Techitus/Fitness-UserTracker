@@ -1,5 +1,6 @@
 import { sql } from "drizzle-orm";
 import { pgTable, text,timestamp, uuid, varchar } from "drizzle-orm/pg-core";
+import { auth } from "./auth.schema";
 
 export const userDatas = pgTable('userdatas',{
     id: uuid('id').primaryKey().default(sql`gen_random_uuid()`),
@@ -9,6 +10,7 @@ export const userDatas = pgTable('userdatas',{
     phoneNumber : varchar("phoneNumber",{length : 10}).notNull(),
     admissionFee : varchar('admissionFee').notNull(),
     profile : varchar("profile"),
+    userId: uuid("userId").references(() => auth.id),
     joinedDate : timestamp('joinedDate').notNull(),
     paymentDate : timestamp('paymentDate').notNull(),
     createdAt : timestamp("createdAt").default(sql `CURRENT_TIMESTAMP`),

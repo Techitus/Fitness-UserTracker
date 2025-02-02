@@ -30,6 +30,7 @@ export async function POST(req: NextRequest) {
         // Create JWT token payload
         const tokenPayload = {
             id: user.id,
+            isAdmin : user.isAdmin
         };
 
         // Generate JWT token

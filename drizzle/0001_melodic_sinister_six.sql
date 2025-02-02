@@ -1,0 +1,2 @@
+ALTER TABLE "userdatas" ADD COLUMN "userId" uuid;--> statement-breakpoint
+ALTER TABLE "userdatas" ADD CONSTRAINT "userdatas_userId_auth_id_fk" FOREIGN KEY ("userId") REFERENCES "public"."auth"("id") ON DELETE no action ON UPDATE no action;
